@@ -249,3 +249,47 @@ def test_cli_success_and_failure_still_obey_existing_exit_codes(
     assert failed_report["status"] == "FAIL"
     assert any(check["status"] == "FAIL" for check in failed_report["checks"])
     capsys.readouterr()
+
+
+def test_schema_does_not_accept_duplicate_or_missing_check_identifiers(
+    validator, load_case
+):
+    report = check_case(load_case("steady_compressor"))
+    bad = report.as_dict()
+    bad["checks"][1]["name"] = "steady_mass_closure"
+    with pytest.raises(ValidationError):
+        validator.validate(bad)
+    bad["checks"] = bad["checks"][:1]
+    with pytest.raises(ValidationError):
+        validator.validate(bad)
+
+
+def test_schema_rejects_not_checked_for_required_physical_balance(
+    validator, load_case
+):
+    report = check_case(load_case("steady_compressor"))
+    bad = report.as_dict()
+    bad["checks"][0].update(
+        status="NOT_CHECKED",
+        residual=None, threshold=None, scale=None, unit=None,
+    )
+    with pytest.raises(ValidationError):
+        validator.validate(bad)
+
+
+def test_schema_rejects_model_kind_check_mismatch(validator, load_case):
+    report = check_case(load_case("steady_compressor"))
+    bad = report.as_dict()
+    bad["kind"] = "storage_interval"
+    with pytest.raises(ValidationError):
+        validator.validate(bad)
+
+
+def test_python_as_dict_is_json_native_without_roundtrip(validator, load_case):
+    report = check_case(load_case("storage_interval"))
+    data = report.as_dict()
+    assert isinstance(data["checks"], list)
+    assert isinstance(data["assumptions"], list)
+    assert isinstance(data["limitations"], list)
+    assert isinstance(data["errors"], list)
+    validator.validate(data)

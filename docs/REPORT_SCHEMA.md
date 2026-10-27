@@ -4,6 +4,11 @@
 
 The published machine-readable contract is [`report-v0.1.0.schema.json`](../src/enerlint/schemas/report-v0.1.0.schema.json), validated with JSON Schema Draft 2020-12. It is included in installed EnerLint wheel and source distributions and can be accessed with Python's `importlib.resources`.
 
+**Scientific claim boundary:** the report has no field meaning `model_validated`,
+`calibrated`, `certified` or `evidence_tier`. The [claim policy](SCIENTIFIC_CLAIM_POLICY.md)
+prohibits inferring those assertions from `PASS_IN_SCOPE`, source fingerprints,
+CI results or user-entered provenance.
+
 ## Versioning and compatibility
 
 - `schema_version = "0.1.0"` identifies the report's data contract. The alpha retains the **same field and version** used in the current API. For the current alpha, the input JSON contract and report output contract both use the literal `0.1.0`. They are **not automatically interchangeable formats**.

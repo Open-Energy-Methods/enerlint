@@ -1,6 +1,8 @@
 name: Synchronize OEM stage milestones
 on:
   workflow_dispatch:
+  issues:
+    types: [opened, labeled, reopened]
   push:
     branches: [main]
     paths:

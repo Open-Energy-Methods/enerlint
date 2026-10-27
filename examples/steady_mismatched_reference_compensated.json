@@ -13,17 +13,17 @@
   "inlets": [
     {
       "name": "inlet",
-      "mass_flow_kg_s": 2,
-      "specific_enthalpy_j_kg": 300000
+      "mass_flow_kg_s": 2.0,
+      "specific_enthalpy_j_kg": 300000.0
     }
   ],
   "outlets": [
     {
       "name": "outlet",
       "mass_flow_kg_s": 2,
-      "specific_enthalpy_j_kg": 520000
+      "specific_enthalpy_j_kg": 520000.0
     }
   ],
-  "heat_into_volume_w": 0,
-  "shaft_work_out_w": -440000
+  "heat_into_volume_w": 0.0,
+  "shaft_work_out_w": -440000.0
 }

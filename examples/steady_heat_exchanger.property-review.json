@@ -1,0 +1,53 @@
+{
+  "review_version": "0.1.0",
+  "author": "Abhijith Sivaprasadan (maintainer self-attestation)",
+  "basis_note": "Entirely synthetic author declaration of common J/kg enthalpy reference within each independently mass-conserved fluid circuit; NOT a thermophysical property verification.",
+  "case_id": "synthetic_two_stream_heat_exchanger",
+  "input_sha256": "78507d53de312e378ce32b21592053583267742ecc241524e7cc96249a7ae2e2",
+  "stream_properties": [
+    {
+      "direction": "inlet",
+      "name": "cold_in",
+      "circuit_id": "cold_circuit",
+      "fluid_id": "synthetic_cold_fluid",
+      "composition_id": "fixed_single_component_synthetic",
+      "backend_id": "manual_synthetic_reference",
+      "backend_version": "case_v0.1",
+      "reference_state_id": "synthetic_cold_zero_A",
+      "source_note": "Maintainer-created constant-offset synthetic values; no property software or instrument used"
+    },
+    {
+      "direction": "outlet",
+      "name": "cold_out",
+      "circuit_id": "cold_circuit",
+      "fluid_id": "synthetic_cold_fluid",
+      "composition_id": "fixed_single_component_synthetic",
+      "backend_id": "manual_synthetic_reference",
+      "backend_version": "case_v0.1",
+      "reference_state_id": "synthetic_cold_zero_A",
+      "source_note": "Maintainer-created constant-offset synthetic values; no property software or instrument used"
+    },
+    {
+      "direction": "inlet",
+      "name": "hot_in",
+      "circuit_id": "hot_circuit",
+      "fluid_id": "synthetic_hot_fluid",
+      "composition_id": "fixed_single_component_synthetic",
+      "backend_id": "manual_synthetic_reference",
+      "backend_version": "case_v0.1",
+      "reference_state_id": "synthetic_hot_zero_B",
+      "source_note": "Maintainer-created constant-offset synthetic values; no property software or instrument used"
+    },
+    {
+      "direction": "outlet",
+      "name": "hot_out",
+      "circuit_id": "hot_circuit",
+      "fluid_id": "synthetic_hot_fluid",
+      "composition_id": "fixed_single_component_synthetic",
+      "backend_id": "manual_synthetic_reference",
+      "backend_version": "case_v0.1",
+      "reference_state_id": "synthetic_hot_zero_B",
+      "source_note": "Maintainer-created constant-offset synthetic values; no property software or instrument used"
+    }
+  ]
+}

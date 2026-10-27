@@ -42,6 +42,9 @@ Its V0–V5 terms are **OEM-only descriptions**, not ASME ratings or automatic g
 - **Strict JSON/SI input contracts:** explicit assumptions, numeric finite checks,
   rejection of unknown fields and omitted quantities. Does not silently infer
   missing input as zero.
+- **Property-reference metadata review:** an optional, author-attested
+  [property-basis preflight](docs/PROPERTY_DATA_ACCEPTANCE.md) checks stream/circuit
+  declarations and incompatible zeros; **does not authenticate fluid properties**.
 - **Numerical tolerances:** displayed absolute/relative thresholds and measured
   residuals per check.
 - **Machine-readable reports:** input SHA-256 of canonical JSON, evidence origin,

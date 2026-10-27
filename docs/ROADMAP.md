@@ -23,7 +23,7 @@
 - [x] Regression coverage of zero-flow, reference-datum, cancellation, strict-threshold and arithmetic-overflow cases (maintainer-authored tests)
 - [ ] Independent scientific critique of numeric tolerances, conditioning and residual formulation
 - [ ] Source review of analytical cases and tolerance choice
-- [ ] Add documented property-data acceptance protocol
+- [x] Publish [property-data acceptance protocol](PROPERTY_DATA_ACCEPTANCE.md), author-attested reference sidecars and mismatch regression cases (not physical-property validation)
 - [ ] Replace/generalize demonstration fixtures with real exported model
       results from at least one consented publicly shareable source
 - [ ] Compare fault detection with incumbent modeling tools

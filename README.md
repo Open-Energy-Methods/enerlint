@@ -137,6 +137,8 @@ with wrong inputs may still satisfy conservation.
 - [Evidence descriptors (V0–V5), scientific claims and prohibited inferences](docs/SCIENTIFIC_CLAIM_POLICY.md)
 - [Predeclared benchmark and fault-injection protocol](docs/BENCHMARK_PROTOCOL.md)
 - [Ten worked analytical benchmark case cards (all synthetic, external review pending)](docs/BENCHMARK_CASE_CARDS.md)
+- [Thirteen manufactured/limiting numerical case cards, including tolerated errors](docs/MANUFACTURED_LIMITS.md)
+- [Frozen manufactured reference inputs and expected statuses](docs/manufactured_limits_v0.1.json)
 - [Frozen ten-case expected results and deliberate failing mutations](docs/analytical_reference_v0.1.json)
 - [Initial synthetic benchmark results](docs/RESULTS.md)
 - [Prespecified native thermal diagnostic comparison (D1; not yet run)](docs/EXPERIMENT_D1_THERMAL_COMPARISON.md)

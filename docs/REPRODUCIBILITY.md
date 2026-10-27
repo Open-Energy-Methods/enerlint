@@ -57,6 +57,18 @@ This bounded check scans git-tracked source and both distribution archives for s
 
 The [Scientific core workflow](../.github/workflows/ci.yml) uploads this manifest **along with the audited wheel and sdist** as a 14-day GitHub Actions artifact. The SHA hashes describe that one build; a successful upload is not a tagged or reviewed release. See [security and artifact-audit control record](CI_SECURITY_AND_REPRODUCIBILITY.md).
 
+## Candidate publication metadata checks (no actual release)
+
+After building a wheel and sdist, a selected CI matrix job performs:
+
+```shell
+python -m pip install "twine>=6,<8" "cffconvert>=2,<3"
+python -m twine check dist/*.whl dist/*.tar.gz
+cffconvert --validate -i CITATION.cff
+```
+
+This validates Python distribution metadata/readme rendering and CFF syntax on that environment, not the truth of attribution, research results or PyPI account ownership. The [dated NO-GO decision](RELEASE_READINESS_2026-10-27.md) documents these separate publication checks and rights blockers. Source archives include reproducibility inputs via [MANIFEST.in](../MANIFEST.in).
+
 ## Current GitHub CI coverage
 
 The [Scientific core workflow](../.github/workflows/ci.yml) runs on Linux, Windows and macOS, using CPython 3.10 and 3.13. It performs an editable installation, the pytest suite, the synthetic benchmark ledger, the isolated wheel/sdist smoke test, and the CLI demonstrations.

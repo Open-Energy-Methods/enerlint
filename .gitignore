@@ -8,3 +8,6 @@ build/
 .venv/
 *.log
 reports/
+
+# Per-run CI output: build-specific SHA manifests are uploaded, not committed.
+artifacts/ci/

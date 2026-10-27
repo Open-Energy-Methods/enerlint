@@ -109,6 +109,19 @@ def _calculate(case: dict[str, Any]) -> dict[str, dict[str, Any]]:
         }
 
 
+def _as_binary64_operands(value: Any) -> Any:
+    """Match _number's conversion of numeric JSON scalars to Python floats."""
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, dict):
+        return {key: _as_binary64_operands(v) for key, v in value.items()}
+    if isinstance(value, list):
+        return [_as_binary64_operands(v) for v in value]
+    return value
+
+
 def audit_text(text: str) -> dict[str, Any]:
     """Three-way numerical comparison with no modification to core result."""
     try:
@@ -127,7 +140,7 @@ def audit_text(text: str) -> dict[str, Any]:
         }
 
     exact = _calculate(encoded)
-    quantized = _calculate(binary)
+    quantized = _calculate(_as_binary64_operands(binary))
     observed = {item.name: item for item in report.checks}
     rows = []
     disagreement = False

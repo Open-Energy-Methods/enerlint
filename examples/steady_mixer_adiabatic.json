@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "steady_control_volume",
+  "case_id": "synthetic_adiabatic_mixer",
+  "provenance": {
+    "evidence_class": "hand_constructed",
+    "declared_source": "TH-CV-005 v0.1 hand-calculated two-inlet ideal adiabatic mixing example (synthetic); no fluid-state or mixture-property validation"
+  },
+  "assumptions": {
+    "steady_state": true,
+    "neglect_kinetic_potential": true
+  },
+  "inlets": [
+    {
+      "name": "branch_a_in",
+      "mass_flow_kg_s": 2,
+      "specific_enthalpy_j_kg": 100000
+    },
+    {
+      "name": "branch_b_in",
+      "mass_flow_kg_s": 3,
+      "specific_enthalpy_j_kg": 300000
+    }
+  ],
+  "outlets": [
+    {
+      "name": "mixture_out",
+      "mass_flow_kg_s": 5,
+      "specific_enthalpy_j_kg": 220000
+    }
+  ],
+  "heat_into_volume_w": 0,
+  "shaft_work_out_w": 0
+}

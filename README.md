@@ -127,6 +127,8 @@ Contributions welcome after repository publication. MIT licensed.
 
 EnerLint is developed under [Open Energy Methods](https://github.com/Open-Energy-Methods), an independent open-source research-software initiative. See [branding](docs/BRANDING.md).
 
+Follow [Open Energy Methods on LinkedIn](https://www.linkedin.com/company/open-energy-methods) for organization updates.
+
 ## Maintainers, issue tracking and brand
 
 EnerLint is maintained under [Open Energy Methods](https://github.com/Open-Energy-Methods), an independent open-source research-software initiative. The [approved OEM vector brand assets](https://github.com/Open-Energy-Methods/.github/tree/main/assets/brand/) are maintained centrally by the organization rather than duplicated in this repository.

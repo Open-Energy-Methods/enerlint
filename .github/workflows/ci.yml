@@ -38,6 +38,8 @@ jobs:
         run: python scripts/run_analytical_catalog.py
       - name: Verify manufactured/limiting numerical cases and tolerated misses
         run: python scripts/run_manufactured_limits.py
+      - name: Replay registered developer-selected negative controls and known escapes
+        run: python scripts/run_negative_controls.py
       - name: Build wheel and source distribution
         run: |
           python -m pip install build
@@ -62,6 +64,7 @@ jobs:
             artifacts/ci/build-manifest.json
             artifacts/ci/analytical_catalog_v0.1.json
             artifacts/ci/manufactured_limits_v0.1.json
+            artifacts/ci/negative_controls_v0.1.json
           if-no-files-found: error
           retention-days: 14
       - name: Review declared compressor physical boundary (author attestation only)

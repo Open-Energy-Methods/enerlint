@@ -39,6 +39,7 @@
 - [x] Publish **ten** analytical [benchmark case cards](BENCHMARK_CASE_CARDS.md), independently hand-checkable with a [versioned SI oracle](analytical_reference_v0.1.json) and ten developer-selected failing mutations (maintainer-authored, **not externally reviewed**).
 - [x] Record separately implemented [Decimal-based reference arithmetic](../scripts/run_analytical_catalog.py) and an automated ten-case/twenty-run self-test ledger; preserve the earlier four-case result.
 - [x] Develop [13 manufactured/limiting test problems](MANUFACTURED_LIMITS.md) (11 evaluated, 2 rejected), record 13 selected perturbations including two known tolerated errors and a flow/power convergence sequence. Developer self-test only, external review still open.
+- [x] Freeze and replay [39 synthetic negative controls](NEGATIVE_CONTROL_STUDY.md): 18 failed balances, 11 invalid-input rejections, six expected blind spots, one metadata-only timing description and three invariant controls. Developer-authored, not an empirical fault-detection study.
 - [x] Draft a prespecified [native thermal-tool comparison](EXPERIMENT_D1_THERMAL_COMPARISON.md) with equal-information controls; **experiment not yet run**.
 - [ ] Obtain independent critique and compare with one real external implementation; retain null/negative findings.
 

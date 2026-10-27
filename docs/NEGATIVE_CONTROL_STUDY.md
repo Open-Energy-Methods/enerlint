@@ -21,7 +21,7 @@ The study operates on **exported input JSON**, not on an independently implement
 ## Reproducibility and prespecification
 
 - Deterministic seed: `OEM-NC11-DETERMINISTIC-V0.1-NO-RNG`. This is a fixed identifier, **not** a pseudorandom generator seed; no random sampling takes place.
-- The [manifest](negative_controls_v0.1.json) pins **the exact Git blob SHA-1** of each of six author-derived baseline JSON files. The runner rejects altered baselines without a new versioned catalogue.
+- The [manifest](negative_controls_v0.1.json) pins the **Git blob SHA-1** of each of six author-derived baseline JSON files. The replay tool normalizes only Windows working-tree CRLF line endings to canonical LF before comparing the Git text blob, so cross-platform checkout conversion is not a false change; actual numbers and other JSON content edits still invalidate the frozen pin.
 - Every NC ID specifies the base, mutation operator/values, expected status, optional target check, qualitative interpretation, and (where evaluable) frozen independently computed residual/threshold values.
 - [`run_negative_controls.py`](../scripts/run_negative_controls.py) deep-copies the case, applies only the documented data-only operators, independently recalculates accounting using Decimal arithmetic, compares with EnerLint output and records every resulting source case and SHA-256 digest.
 - For NaN/Infinity probes, the replay ledger stores a **valid JSON tagged representation**, e.g. `{"$nonfinite_python_value": "NaN"}`, instead of pretending that the invalid number is standards-compliant JSON. The runner injects the corresponding non-finite Python float and requires `ContractError`.

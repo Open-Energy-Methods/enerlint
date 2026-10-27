@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "steady_control_volume",
+  "case_id": "synthetic_turbine_heat_loss",
+  "provenance": {
+    "evidence_class": "hand_constructed",
+    "declared_source": "TH-CV-007 v0.1 synthetic steady turbine with 30 kW external heat loss; no empirical turbine measurement"
+  },
+  "assumptions": {
+    "steady_state": true,
+    "neglect_kinetic_potential": true
+  },
+  "inlets": [
+    {
+      "name": "inlet",
+      "mass_flow_kg_s": 1.5,
+      "specific_enthalpy_j_kg": 800000
+    }
+  ],
+  "outlets": [
+    {
+      "name": "outlet",
+      "mass_flow_kg_s": 1.5,
+      "specific_enthalpy_j_kg": 600000
+    }
+  ],
+  "heat_into_volume_w": -30000,
+  "shaft_work_out_w": 270000
+}

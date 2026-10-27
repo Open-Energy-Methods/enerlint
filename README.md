@@ -9,7 +9,9 @@
 **Independent, scope-limited physical consistency checks for energy-engineering outputs.**
 
 > **Scientific status: initial foundation / alpha (v0.1.0a0).** Four hand-constructed
-> analytical demonstrations and a negative-control suite. **Not** externally
+> analytical demonstrations in the original foundation ledger, now expanded to a
+> separate **ten-case synthetic analytical catalogue** with case cards and negative
+> controls. **Not** externally
 > validated or qualified for operational control, engineering certification,
 > procurement decisions, or nuclear safety assessments. No PyPI or Zenodo release is claimed; the public GitHub repository is a review-stage alpha.
 
@@ -49,6 +51,10 @@ Its V0–V5 terms are **OEM-only descriptions**, not ASME ratings or automatic g
   residuals per check.
 - **Machine-readable reports:** input SHA-256 of canonical JSON, evidence origin,
   exact assertions/assumptions/limitations, and `PASS_IN_SCOPE` / `FAIL`.
+- **Analytical reference catalogue:** [ten frozen hand-checkable SI cases](docs/BENCHMARK_CASE_CARDS.md)
+  across compressors, turbines, mixers, splitters, exchangers and storage,
+  with [ten separately specified negative controls](docs/analytical_reference_v0.1.json).
+  Maintainer-authored, **not externally peer reviewed**.
 - **Fault injection and metamorphic tests:** deliberately altered mass/enthalpy,
   work sign, heat sign, storage state and timestep, plus valid transformations.
 
@@ -61,6 +67,7 @@ Python >=3.10.
 python -m pip install -e ".[dev]"
 python -m pytest -q
 python scripts/run_foundation_benchmark.py
+python scripts/run_analytical_catalog.py
 enerlint check examples/steady_compressor.json --output reports/compressor.json
 enerlint check examples/steady_heat_exchanger.json
 enerlint check examples/steady_turbine.json
@@ -129,7 +136,8 @@ with wrong inputs may still satisfy conservation.
 - [Scientific limits and independence](docs/SCIENTIFIC_SCOPE.md)
 - [Evidence descriptors (V0–V5), scientific claims and prohibited inferences](docs/SCIENTIFIC_CLAIM_POLICY.md)
 - [Predeclared benchmark and fault-injection protocol](docs/BENCHMARK_PROTOCOL.md)
-- [Worked analytical benchmark case cards (compressor and thermal store)](docs/BENCHMARK_CASE_CARDS.md)
+- [Ten worked analytical benchmark case cards (all synthetic, external review pending)](docs/BENCHMARK_CASE_CARDS.md)
+- [Frozen ten-case expected results and deliberate failing mutations](docs/analytical_reference_v0.1.json)
 - [Initial synthetic benchmark results](docs/RESULTS.md)
 - [Prespecified native thermal diagnostic comparison (D1; not yet run)](docs/EXPERIMENT_D1_THERMAL_COMPARISON.md)
 - [CI security, artifact auditing, pinned actions and reproducibility manifest](docs/CI_SECURITY_AND_REPRODUCIBILITY.md)

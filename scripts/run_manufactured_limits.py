@@ -20,6 +20,8 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+# Script-file execution sets sys.path[0] to scripts/, not necessarily the repo root.
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
 from enerlint import check_case  # noqa: E402

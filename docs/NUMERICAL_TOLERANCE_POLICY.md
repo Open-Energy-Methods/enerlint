@@ -82,7 +82,20 @@ Tests should present independently specified, known-valid and known-invalid refe
 
 Tests of the same code with independently hand-entered expected values are developer regression tests, not an outside adjudication. Do not report false-alarm rates or scientific detection probabilities from the selected synthetic examples alone. The full false-positive, false-negative and abstention experiment remains a separate project task.
 
-## 6. External critique request — still open
+## 6. Enthalpy datum acceptance and conditioning
+
+An independent constant shift in each *exactly* mass-balanced material circuit
+does not change the aggregate energy residual. This is not true for unbalanced
+circuits: an offset C contributes C times the circuit mass residual. Separate
+numeric residual checks do not authenticate an enthalpy reference state, and
+near-balanced streams with enormous offsets may still be poorly conditioned.
+
+A version-preserving, opt-in [property reference preflight](PROPERTY_DATA_ACCEPTANCE.md)
+can reject mismatched **author declarations**; it cannot verify actual fluid
+composition, backend calculations or calibration. Do not interpret a passing
+metadata review as property-data validation.
+
+## 7. External critique request — still open
 
 A reviewer should independently assess:
 

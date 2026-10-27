@@ -20,7 +20,7 @@
   "outlets": [
     {
       "name": "outlet",
-      "mass_flow_kg_s": 2,
+      "mass_flow_kg_s": 2.0,
       "specific_enthalpy_j_kg": 520000.0
     }
   ],

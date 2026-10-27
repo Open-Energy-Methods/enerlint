@@ -24,6 +24,8 @@ python scripts/run_foundation_benchmark.py
 python scripts/run_analytical_catalog.py
 python scripts/run_manufactured_limits.py
 python scripts/run_negative_controls.py
+python scripts/run_tolerance_precision_stress.py
+python scripts/audit_numeric_conditioning.py examples/steady_compressor.json
 python -m enerlint check examples/steady_compressor.json
 ```
 

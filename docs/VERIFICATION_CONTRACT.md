@@ -28,6 +28,12 @@ cannot be detected from the JSON alone. An SHA-256 binds each report to the
 canonical JSON object (sorted keys; compact separators); it does **not** prove
 that the JSON reflects original instrumentation or a repository's run artifacts.
 
+The companion [control-volume boundary review](CONTROL_VOLUME_BOUNDARY_REVIEW.md)
+shows port diagrams, signed heat/work examples, a hypothetical leak counterexample,
+and an **optional** author-attested preflight. It is deliberately separate from
+the unchanged strict `0.1.0` case and report schemas: completing the preflight
+cannot prove all actual physical crossings have been found.
+
 ## Steady control-volume mass balance
 
 `mass_in - mass_out = 0`, both streams oriented using separate `inlets` and

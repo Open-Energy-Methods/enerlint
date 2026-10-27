@@ -122,6 +122,24 @@ def _check(name: str, description: str, residual: float, scale: float, unit: str
     )
 
 
+
+def _finite_sum(terms: Any, label: str) -> float:
+    """Sum validated numeric terms; fail closed on unrepresentable aggregates.
+
+    Individual finite SI inputs do not imply their aggregate fits in binary64.
+    An ambiguous overflow must be INVALID_INPUT, never a numerical PASS.
+    """
+    try:
+        result = math.fsum(terms)
+    except (OverflowError, ValueError) as exc:
+        raise ContractError(
+            f"{label}: numeric aggregation overflow or loss of representability"
+        ) from exc
+    if not math.isfinite(result):
+        raise ContractError(f"{label}: nonfinite numeric aggregate")
+    return result
+
+
 def _stream_list(value: Any, label: str) -> list[tuple[float, float]]:
     if not isinstance(value, list) or not value:
         raise ContractError(f"{label} must be a nonempty array")
@@ -199,8 +217,8 @@ def check_steady_control_volume(case: Mapping[str, Any]) -> VerificationReport:
     _fields(tolerances, "tolerances", set(), {"mass_kg_s", "energy_w"})
     mass_tol = _tolerance(tolerances.get("mass_kg_s"), "tolerances.mass_kg_s", default_abs=1e-9)
     energy_tol = _tolerance(tolerances.get("energy_w"), "tolerances.energy_w", default_abs=1.0)
-    mass_in = math.fsum(m for m, _ in ins)
-    mass_out = math.fsum(m for m, _ in outs)
+    mass_in = _finite_sum((m for m, _ in ins), "Inlet mass rates")
+    mass_out = _finite_sum((m for m, _ in outs), "Outlet mass rates")
     energy_in_terms = [m * h for m, h in ins]
     energy_out_terms = [m * h for m, h in outs]
     if not all(math.isfinite(v) for v in energy_in_terms + energy_out_terms):
@@ -208,8 +226,8 @@ def check_steady_control_volume(case: Mapping[str, Any]) -> VerificationReport:
     mass = _check(
         "steady_mass_closure",
         "sum(inlet mass rates) - sum(outlet mass rates) = 0",
-        math.fsum([mass_in, -mass_out]),
-        math.fsum([abs(mass_in), abs(mass_out)]),
+        _finite_sum([mass_in, -mass_out], "Steady mass residual"),
+        _finite_sum([abs(mass_in), abs(mass_out)], "Steady mass scale"),
         "kg/s",
         mass_tol,
     )
@@ -219,9 +237,9 @@ def check_steady_control_volume(case: Mapping[str, Any]) -> VerificationReport:
     # For a mass-conserving boundary, this scale is invariant under a uniform
     # enthalpy datum shift. Different chemical/species datums remain outside
     # v0.1's verification scope.
-    mass_total = math.fsum([mass_in, mass_out])
+    mass_total = _finite_sum([mass_in, mass_out], "Total stream mass rate")
     h_reference = (
-        math.fsum(energy_in_terms + energy_out_terms) / mass_total
+        _finite_sum(energy_in_terms + energy_out_terms, "Enthalpy reference numerator") / mass_total
         if mass_total > 0 else 0.0
     )
     if not math.isfinite(h_reference):
@@ -234,8 +252,8 @@ def check_steady_control_volume(case: Mapping[str, Any]) -> VerificationReport:
     energy = _check(
         "steady_first_law",
         "sum(m_dot*h)_in - sum(m_dot*h)_out + Q_into - W_out = 0",
-        math.fsum(energy_in_terms + [-v for v in energy_out_terms] + [q, -w]),
-        math.fsum(energy_scale_terms),
+        _finite_sum(energy_in_terms + [-v for v in energy_out_terms] + [q, -w], "Steady energy residual"),
+        _finite_sum(energy_scale_terms, "Steady energy scale"),
         "W",
         energy_tol,
     )
@@ -288,9 +306,9 @@ def check_storage_interval(case: Mapping[str, Any]) -> VerificationReport:
     interval_terms = [charge * dt, -discharge * dt, -loss * dt]
     if not all(math.isfinite(v) for v in interval_terms):
         raise ContractError("Integrated energy overflow: check rates and duration")
-    delta = math.fsum([final, -initial])
-    residual = math.fsum([delta] + [-v for v in interval_terms])
-    scale = math.fsum([abs(delta)] + [abs(v) for v in interval_terms])
+    delta = _finite_sum([final, -initial], "Storage energy change")
+    residual = _finite_sum([delta] + [-v for v in interval_terms], "Storage energy residual")
+    scale = _finite_sum([abs(delta)] + [abs(v) for v in interval_terms], "Storage energy scale")
     checks = [
         _check(
             "storage_energy_closure",

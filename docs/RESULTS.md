@@ -1,0 +1,56 @@
+# Foundation synthetic benchmark results (27 October 2026)
+
+**Scope:** developer-built software smoke/negative-control checks. This is **not**
+empirical verification, peer review, or evidence of deployment suitability.
+
+Reproduce offline using:
+
+```bash
+python -m pip install -e ".[dev]"
+python -m pytest -q
+python scripts/run_foundation_benchmark.py
+```
+
+At development time, **42 Python tests passed locally on Python 3.13.5**.
+Cross-platform CI is configured but **has not been run on GitHub**.
+
+| Demonstration | Expected | Observed |
+|---|---|---|
+| 4 hand-constructed cases | Pass declared checks | 4 passed in scope |
+| 6 deliberately broken cases | At least one declared balance fails | 6 failed as expected |
+| 1 compensating operating-point error | Conservation cannot detect it | Passed in scope as an **intentional escape** |
+
+The report is saved in [`artifacts/foundation_benchmark.json`](../artifacts/foundation_benchmark.json),
+with a canonical SHA-256 digest stored inside the record. The archive records
+all case and fault names, check residuals, input fingerprints and thresholds.
+The ledger is deterministic for the declared Python implementation.
+
+## Baselines
+
+- Compressor: 0 kg/s mass residual and 0 W first-law residual.
+- Turbine: 0 kg/s mass residual and 0 W first-law residual.
+- Two-stream heat exchanger: 0 kg/s mass residual and 0 W first-law residual.
+- One-hour storage: 0 J accumulation residual; within declared capacity.
+
+## Named detected errors (deliberately inserted)
+
+| Error | Example failed residual |
+|---|---:|
+| Outlet flow increased 20% | -0.4 kg/s mass; -168,000 W energy |
+| Outlet enthalpy increased 20% | -168,000 W energy |
+| Compressor shaft work sign inverted | -480,000 W energy |
+| Turbine heat sign inverted | -10,000 W energy |
+| Stored energy state raised 20% | +443,200,000 J |
+| Interval duration increased 20% | -43,200,000 J |
+
+**Do not report '100% detection accuracy'.** These specific mutations were
+selected in advance by the software developer, do not constitute a held-out
+independent fault distribution, and do not quantify false positives on real
+engineering data. Strongly correlated or compensated errors can escape.
+
+## External review required before a scientific release
+
+Obtain an independent review of boundary equations, unit conventions,
+uncertainty/tolerance policies, reference-case selection, and effect of
+shared model assumptions. Then compare against the diagnostics provided
+by at least one established energy-modeling framework.

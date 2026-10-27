@@ -1,0 +1,263 @@
+{
+  "study_type": "hand_constructed_synthetic_software_selftest",
+  "disclaimer": "These scenarios and mutations are selected by the developer. Results demonstrate self-test behavior, NOT measured fault-detection sensitivity, validation, or superiority against existing software.",
+  "baseline_cases": [
+    {
+      "reference_case": "steady_compressor",
+      "case_id": "synthetic_adiabatic_compressor",
+      "status": "PASS_IN_SCOPE",
+      "case_sha256": "5d39da6d196e4b2494a5958af53db32cf7d93bc7d0acfd4e8ac232579e9a7213",
+      "checks": [
+        {
+          "name": "steady_mass_closure",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 4e-08,
+          "unit": "kg/s"
+        },
+        {
+          "name": "steady_first_law",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 1.0,
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "reference_case": "steady_turbine",
+      "case_id": "synthetic_adiabatic_turbine",
+      "status": "PASS_IN_SCOPE",
+      "case_sha256": "63310f741608f1fb0d2ccedd2872f148ef8031b2c2ea5224620cadd978066761",
+      "checks": [
+        {
+          "name": "steady_mass_closure",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 4e-08,
+          "unit": "kg/s"
+        },
+        {
+          "name": "steady_first_law",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 1.0,
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "reference_case": "steady_heat_exchanger",
+      "case_id": "synthetic_two_stream_heat_exchanger",
+      "status": "PASS_IN_SCOPE",
+      "case_sha256": "78507d53de312e378ce32b21592053583267742ecc241524e7cc96249a7ae2e2",
+      "checks": [
+        {
+          "name": "steady_mass_closure",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 6.000000000000001e-08,
+          "unit": "kg/s"
+        },
+        {
+          "name": "steady_first_law",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 1.0,
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "reference_case": "storage_interval",
+      "case_id": "synthetic_one_hour_storage",
+      "status": "PASS_IN_SCOPE",
+      "case_sha256": "b26201e7dd7f684ae527387c4cc7e2559b713e52ea33f376c5afe9a0c3e5c05e",
+      "checks": [
+        {
+          "name": "storage_energy_closure",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 8.64,
+          "unit": "J"
+        },
+        {
+          "name": "storage_capacity",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 0.0,
+          "unit": "J"
+        }
+      ]
+    }
+  ],
+  "fault_cases": [
+    {
+      "reference_case": "steady_compressor",
+      "mutation": "outlet_mass_scale",
+      "case_id": "synthetic_adiabatic_compressor__outlet_mass_scale",
+      "status": "FAIL",
+      "case_sha256": "11b5fbf4d0ee63d57c6a02c3f776c9aa76befbecd0d0f39e728dee393542e205",
+      "checks": [
+        {
+          "name": "steady_mass_closure",
+          "status": "FAIL",
+          "residual": -0.3999999999999999,
+          "threshold": 4.4000000000000004e-08,
+          "unit": "kg/s"
+        },
+        {
+          "name": "steady_first_law",
+          "status": "FAIL",
+          "residual": -168000.0,
+          "threshold": 1.0,
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "reference_case": "steady_compressor",
+      "mutation": "outlet_enthalpy_scale",
+      "case_id": "synthetic_adiabatic_compressor__outlet_enthalpy_scale",
+      "status": "FAIL",
+      "case_sha256": "6051cbb593dcb94e042b0e0736519f49c6d9d1d3f160aed2a23e3b12e91998d4",
+      "checks": [
+        {
+          "name": "steady_mass_closure",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 4e-08,
+          "unit": "kg/s"
+        },
+        {
+          "name": "steady_first_law",
+          "status": "FAIL",
+          "residual": -168000.0,
+          "threshold": 1.0,
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "reference_case": "steady_compressor",
+      "mutation": "invert_shaft_work",
+      "case_id": "synthetic_adiabatic_compressor__invert_shaft_work",
+      "status": "FAIL",
+      "case_sha256": "325c5373aff817e4a01f8bc785be902dd53b5e4288155303e8ac324311755c2e",
+      "checks": [
+        {
+          "name": "steady_mass_closure",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 4e-08,
+          "unit": "kg/s"
+        },
+        {
+          "name": "steady_first_law",
+          "status": "FAIL",
+          "residual": -480000.0,
+          "threshold": 1.0,
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "reference_case": "steady_turbine",
+      "mutation": "invert_heat",
+      "case_id": "synthetic_adiabatic_turbine__invert_heat",
+      "status": "FAIL",
+      "case_sha256": "0ca03d2942ac7215eedbb5cbb548c36ddd77be77619c6e3ba199ec61a8822cf4",
+      "checks": [
+        {
+          "name": "steady_mass_closure",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 4e-08,
+          "unit": "kg/s"
+        },
+        {
+          "name": "steady_first_law",
+          "status": "FAIL",
+          "residual": -10000.0,
+          "threshold": 1.0,
+          "unit": "W"
+        }
+      ]
+    },
+    {
+      "reference_case": "storage_interval",
+      "mutation": "storage_final_offset",
+      "case_id": "synthetic_one_hour_storage__storage_final_offset",
+      "status": "FAIL",
+      "case_sha256": "f11c852f772d5ec63b2421f1473845dd5634239df0cf4dacc22faab9e18e77fa",
+      "checks": [
+        {
+          "name": "storage_energy_closure",
+          "status": "FAIL",
+          "residual": 443200000.0,
+          "threshold": 13.072000000000001,
+          "unit": "J"
+        },
+        {
+          "name": "storage_capacity",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 0.0,
+          "unit": "J"
+        }
+      ]
+    },
+    {
+      "reference_case": "storage_interval",
+      "mutation": "storage_duration_scale",
+      "case_id": "synthetic_one_hour_storage__storage_duration_scale",
+      "status": "FAIL",
+      "case_sha256": "de132e69bc453e1702bfa9624ff6bd29b698f831255f731951681bd8f5d2809f",
+      "checks": [
+        {
+          "name": "storage_energy_closure",
+          "status": "FAIL",
+          "residual": -43200000.0,
+          "threshold": 9.936,
+          "unit": "J"
+        },
+        {
+          "name": "storage_capacity",
+          "status": "PASS",
+          "residual": 0.0,
+          "threshold": 0.0,
+          "unit": "J"
+        }
+      ]
+    }
+  ],
+  "known_undetectable_compensating_error": {
+    "case_id": "synthetic_adiabatic_compressor",
+    "status": "PASS_IN_SCOPE",
+    "case_sha256": "16002c1ef63b904f68c30cc98cbf6727694b3636b099e57ef5e9f53927e9b7b9",
+    "checks": [
+      {
+        "name": "steady_mass_closure",
+        "status": "PASS",
+        "residual": 0.0,
+        "threshold": 4.4000000000000004e-08,
+        "unit": "kg/s"
+      },
+      {
+        "name": "steady_first_law",
+        "status": "PASS",
+        "residual": -1.1641532182693481e-10,
+        "threshold": 1.0,
+        "unit": "W"
+      }
+    ]
+  },
+  "summary": {
+    "synthetic_baselines_pass": 4,
+    "synthetic_baselines_total": 4,
+    "deliberate_faults_detected": 6,
+    "deliberate_faults_total": 6,
+    "known_compensating_error_escaped": true
+  },
+  "ledger_sha256_without_this_field": "f8b816ba550808e5987d554b6e7524744ffa673d527186a4762fe8009234ca2a"
+}

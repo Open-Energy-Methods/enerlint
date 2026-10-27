@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://github.com/Open-Energy-Methods"><img src="https://raw.githubusercontent.com/Open-Energy-Methods/.github/main/assets/brand/oem-logo-symbol-primary.svg" alt="Open Energy Methods logo" width="92"></a>
+</p>
+
 # EnerLint
 
 **Independent, scope-limited physical consistency checks for energy-engineering outputs.**
@@ -120,3 +124,9 @@ Contributions welcome after repository publication. MIT licensed.
 ## Organization
 
 EnerLint is developed under [Open Energy Methods](https://github.com/Open-Energy-Methods), an independent open-source research-software initiative. See [branding](docs/BRANDING.md).
+
+## Maintainers, issue tracking and brand
+
+EnerLint is maintained under [Open Energy Methods](https://github.com/Open-Energy-Methods), an independent open-source research-software initiative. The [approved OEM vector brand assets](https://github.com/Open-Energy-Methods/.github/tree/main/assets/brand/) are maintained centrally by the organization rather than duplicated in this repository.
+
+Our scientific and user-research development backlog is tracked through [EnerLint issues](https://github.com/Open-Energy-Methods/enerlint/issues), [the scientific roadmap](https://github.com/Open-Energy-Methods/enerlint/issues/36), and the [OEM Agile workflow](https://github.com/Open-Energy-Methods/.github/blob/main/docs/AGILE_PLAYBOOK.md). Work type, priority, severity, stage and sprint are managed in issue fields/labels; a priority label is not evidence of a defect, and passing our checks does not confer engineering certification.

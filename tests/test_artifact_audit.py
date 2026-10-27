@@ -48,6 +48,11 @@ def make_sdist(tmp_path: Path, extra: dict[str, bytes] | None = None) -> Path:
         root + "pyproject.toml": b'[project]\nname = "enerlint"\n',
         root + "PKG-INFO": METADATA,
         root + "LICENSE": b"MIT License\n",
+        root + "CITATION.cff": b"cff-version: 1.2.0\n",
+        root + "examples/steady_compressor.json": b"{}\n",
+        root + "docs/VERIFICATION_CONTRACT.md": b"# Contract\n",
+        root + "scripts/run_foundation_benchmark.py": b"pass\n",
+        root + "tests/test_steady.py": b"pass\n",
     }
     members.update(extra or {})
     with tarfile.open(path, "w:gz") as archive:

@@ -28,6 +28,13 @@ jobs:
           python -m build --sdist --wheel
       - name: Test clean, isolated wheel and sdist installs
         run: python scripts/verify_distributions.py
+      - name: Review declared compressor physical boundary (author attestation only)
+        run: >
+          python scripts/review_control_volume.py
+          examples/steady_compressor.json
+          examples/steady_compressor.boundary-review.json
+      - name: Check nonadiabatic control-volume example
+        run: python -m enerlint check examples/steady_nonadiabatic_compressor.json
       - name: Check demonstrator cases
         shell: bash
         run: |

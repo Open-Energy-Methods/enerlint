@@ -49,9 +49,12 @@ explicit name and `specific_enthalpy_j_kg`.
 
 This form neglects kinetic/potential flow energy. Both `steady_state: true` and
 `neglect_kinetic_potential: true` **must be explicitly declared**. No hidden
-mass accumulation, leakage, chemical reaction, phase/mixing energy or omitted
-auxiliaries should cross the specified boundary. The equation is a restricted
-steady, non-reacting flow-model check.
+mass accumulation, unreported leakage, chemical reactions, or omitted
+auxiliary transfers should cross the specified boundary. Phase changes and
+mixing may be represented by correctly referenced stream enthalpies, but v0.1
+does **not** independently check the thermophysical properties, phase states or
+reference-basis compatibility. The equation is a restricted steady, nonreacting
+flow-model check.
 
 Sign convention: `heat_into_volume_w` > 0 INTO the boundary; positive
 `shaft_work_out_w` leaves the boundary. Compressor power entering the system

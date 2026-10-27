@@ -47,6 +47,16 @@ def test_frozen_register_has_39_cases_six_immutable_baselines(frozen):
         assert check_case(json.loads(raw)).status == "PASS_IN_SCOPE"
 
 
+def test_pinned_text_blob_hash_normalizes_only_worktree_newlines(frozen):
+    path = ROOT / frozen["baselines"]["steady_compressor"]["file"]
+    raw = path.read_bytes()
+    lf = raw.replace(b"\r\n", b"\n")
+    crlf = lf.replace(b"\n", b"\r\n")
+    original = frozen["baselines"]["steady_compressor"]["git_blob_sha1"]
+    assert git_blob_hash(lf) == git_blob_hash(crlf) == original
+    assert git_blob_hash(lf.replace(b"300000", b"300001")) != original
+
+
 def test_ledger_replays_all_mutations_and_preserves_outcomes(outcomes):
     assert outcomes["summary"] == {
         "total_cases": 39,

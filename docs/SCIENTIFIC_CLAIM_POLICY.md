@@ -107,6 +107,11 @@ If OEM eventually runs independent tests, preserves critical findings and satisf
 
 This policy applies to EnerLint v0.1.0a0 and OEM's current workbench description. It does **not** modify the frozen v0.1 input schema, output schema, or established statuses, and does not inject “evidence tiers” into report objects.
 
+A separate [property-reference acceptance policy](PROPERTY_DATA_ACCEPTANCE.md)
+documents why `PASS_IN_SCOPE` cannot establish compatible property zeros, fluid
+identity, backend accuracy or mixture admissibility. The optional preflight only
+assesses declared metadata consistency.
+
 The [scientific scope](SCIENTIFIC_SCOPE.md), [report contract](REPORT_SCHEMA.md), [benchmark case cards](BENCHMARK_CASE_CARDS.md), and [native comparison protocol](EXPERIMENT_D1_THERMAL_COMPARISON.md) give specific technical boundaries. Changes to public scientific claims should include a dated example and corresponding evidence. Retain previous assertions in git history. Solicited independent critique remains **open** ([issue #25](https://github.com/Open-Energy-Methods/enerlint/issues/25)).
 
 **Policy owner:** OEM creator/maintainer. **External status:** unreviewed project editorial/scientific rule, not legal or standards advice.

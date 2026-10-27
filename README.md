@@ -31,7 +31,9 @@ measurements were correct, or that its scientific conclusions are justified.
 ## What works now
 
 - **Steady control volumes:** mass-flow closure and energy/enthalpy closure with
-  explicit heat and shaft-work crossing conventions.
+  explicit heat and shaft-work crossing conventions. An optional, author-attested
+  [boundary preflight](docs/CONTROL_VOLUME_BOUNDARY_REVIEW.md) records physical port,
+  omitted-term and reference assumptions before interpreting results.
 - **Thermal storage (one interval):** stored-energy change versus charge,
   discharge and loss; optional storage capacity check.
 - **Strict JSON/SI input contracts:** explicit assumptions, numeric finite checks,

@@ -1,5 +1,10 @@
 <p align="center">
-  <a href="https://github.com/Open-Energy-Methods"><img src="https://raw.githubusercontent.com/Open-Energy-Methods/.github/main/assets/brand/oem-logo-symbol-primary.svg" alt="Open Energy Methods logo" width="92"></a>
+  <a href="https://github.com/Open-Energy-Methods">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Open-Energy-Methods/.github/main/assets/brand/oem-logo-symbol-reversed.svg">
+      <img src="https://raw.githubusercontent.com/Open-Energy-Methods/.github/main/assets/brand/oem-logo-symbol-primary.svg" alt="Open Energy Methods logo" width="92">
+    </picture>
+  </a>
 </p>
 
 # EnerLint

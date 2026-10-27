@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Open-Energy-Methods/enerlint/blob/main/src/enerlint/schemas/report-v0.1.0.schema.json",
+  "title": "EnerLint report schema v0.1.0",
+  "description": "For alpha report objects: scoped pass, failed physical check, or rejected input. Not scientific validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "enerlint_version",
+    "case_id",
+    "kind",
+    "status",
+    "source_fingerprint_sha256",
+    "evidence_class",
+    "declared_source",
+    "checks",
+    "assumptions",
+    "limitations",
+    "errors"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0",
+      "description": "Schema version of the report contract (same 0.1.0 version as the current input contract, not software version)."
+    },
+    "enerlint_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "kind": {
+      "anyOf": [
+        {
+          "enum": [
+            "steady_control_volume",
+            "storage_interval"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "enum": [
+        "PASS_IN_SCOPE",
+        "FAIL",
+        "INVALID_INPUT"
+      ]
+    },
+    "source_fingerprint_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Canonical supplied-object SHA-256 if successfully checked; null for rejected input, not proof of source authenticity."
+    },
+    "evidence_class": {
+      "anyOf": [
+        {
+          "enum": [
+            "hand_constructed",
+            "model_export",
+            "experimental",
+            "published_reference"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "declared_source": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/check"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "checked": {
+      "type": "object",
+      "required": [
+        "status",
+        "name",
+        "description",
+        "residual",
+        "scale",
+        "threshold",
+        "unit"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "residual": {
+          "type": "number"
+        },
+        "scale": {
+          "type": "number",
+          "minimum": 0
+        },
+        "threshold": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "skipped": {
+      "type": "object",
+      "required": [
+        "status",
+        "name",
+        "description",
+        "residual",
+        "scale",
+        "threshold",
+        "unit"
+      ],
+      "properties": {
+        "status": {
+          "const": "NOT_CHECKED"
+        },
+        "residual": {
+          "type": "null"
+        },
+        "scale": {
+          "type": "null"
+        },
+        "threshold": {
+          "type": "null"
+        },
+        "unit": {
+          "type": "null"
+        }
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "status",
+        "description",
+        "residual",
+        "unit",
+        "scale",
+        "threshold"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "steady_mass_closure",
+            "steady_first_law",
+            "storage_energy_closure",
+            "storage_capacity"
+          ],
+          "description": "Stable v0.1.0 check identifier; use together with schema_version for version-aware interpretation."
+        },
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_CHECKED"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "residual": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scale": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "threshold": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/checked"
+            },
+            {
+              "$ref": "#/$defs/skipped"
+            }
+          ]
+        },
+        {
+          "if": {
+            "properties": {
+              "name": {
+                "const": "steady_mass_closure"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unit": {
+                "enum": [
+                  "kg/s",
+                  null
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "name": {
+                "const": "steady_first_law"
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unit": {
+                "enum": [
+                  "W",
+                  null
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "name": {
+                "enum": [
+                  "storage_energy_closure",
+                  "storage_capacity"
+                ]
+              }
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unit": {
+                "enum": [
+                  "J",
+                  null
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "PASS_IN_SCOPE"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "steady_control_volume",
+              "storage_interval"
+            ]
+          },
+          "source_fingerprint_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "evidence_class": {
+            "enum": [
+              "hand_constructed",
+              "model_export",
+              "experimental",
+              "published_reference"
+            ]
+          },
+          "declared_source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "errors": {
+            "maxItems": 0
+          },
+          "checks": {
+            "minItems": 1,
+            "contains": {
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "not": {
+              "contains": {
+                "properties": {
+                  "status": {
+                    "const": "FAIL"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "FAIL"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "case_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "steady_control_volume",
+              "storage_interval"
+            ]
+          },
+          "source_fingerprint_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "evidence_class": {
+            "enum": [
+              "hand_constructed",
+              "model_export",
+              "experimental",
+              "published_reference"
+            ]
+          },
+          "declared_source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "errors": {
+            "maxItems": 0
+          },
+          "checks": {
+            "minItems": 1,
+            "contains": {
+              "properties": {
+                "status": {
+                  "const": "FAIL"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "INVALID_INPUT"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "case_id": {
+            "type": "null"
+          },
+          "kind": {
+            "type": "null"
+          },
+          "source_fingerprint_sha256": {
+            "type": "null"
+          },
+          "evidence_class": {
+            "type": "null"
+          },
+          "declared_source": {
+            "type": "null"
+          },
+          "checks": {
+            "maxItems": 0
+          },
+          "assumptions": {
+            "maxItems": 0
+          },
+          "errors": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

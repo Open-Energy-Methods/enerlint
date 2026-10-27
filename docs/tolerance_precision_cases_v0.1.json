@@ -1,0 +1,188 @@
+{
+  "catalog_id": "enerlint-decimal-binary64-disagreement-v0.1",
+  "version": "0.1.0",
+  "date": "2026-10-27",
+  "audit_kind": "maintainer-authored decimal-text arithmetic versus Python binary64 check_case",
+  "caveats": [
+    "Not independent external technical review",
+    "No prior probability/measurement uncertainty inferred",
+    "Classification thresholds are review heuristics not validated UQ bounds",
+    "Preserve core input/report schema v0.1.0"
+  ],
+  "cases": [
+    {
+      "id": "TP-001",
+      "base": "steady_compressor",
+      "edits": [],
+      "expected_classification": "DECIMAL_BINARY_AGREEMENT",
+      "expected_decimal_status": "PASS_IN_SCOPE",
+      "expected_core_status": "PASS_IN_SCOPE",
+      "interpretation": "Conventional compressor baseline, both representations agree"
+    },
+    {
+      "id": "TP-002",
+      "base": "steady_compressor",
+      "edits": [
+        {
+          "path": "inlets.0.specific_enthalpy_j_kg",
+          "decimal": "1000000300000"
+        },
+        {
+          "path": "outlets.0.specific_enthalpy_j_kg",
+          "decimal": "1000000420000"
+        }
+      ],
+      "expected_classification": "DECIMAL_BINARY_AGREEMENT",
+      "expected_decimal_status": "PASS_IN_SCOPE",
+      "expected_core_status": "PASS_IN_SCOPE",
+      "interpretation": "Uniform 1e12 J/kg reference change leaves closed first law unchanged"
+    },
+    {
+      "id": "TP-003",
+      "base": "steady_compressor",
+      "edits": [
+        {
+          "path": "inlets.0.specific_enthalpy_j_kg",
+          "decimal": "1000000000000300000"
+        },
+        {
+          "path": "outlets.0.specific_enthalpy_j_kg",
+          "decimal": "1000000000000420000"
+        }
+      ],
+      "expected_classification": "DECISION_DISAGREEMENT",
+      "expected_decimal_status": "PASS_IN_SCOPE",
+      "expected_core_status": "FAIL",
+      "interpretation": "Uniform 1e18 J/kg shift: source decimal balances, binary64 produces spurious 128 W energy residual"
+    },
+    {
+      "id": "TP-004",
+      "base": "steady_compressor",
+      "edits": [
+        {
+          "path": "inlets.0.specific_enthalpy_j_kg",
+          "decimal": "10000000000300000"
+        },
+        {
+          "path": "outlets.0.specific_enthalpy_j_kg",
+          "decimal": "10000000000420001"
+        }
+      ],
+      "expected_classification": "DECISION_DISAGREEMENT",
+      "expected_decimal_status": "FAIL",
+      "expected_core_status": "PASS_IN_SCOPE",
+      "interpretation": "At 1e16 J/kg offset, +1 J/kg on outlet (2 W effect) disappears in binary64"
+    },
+    {
+      "id": "TP-005",
+      "base": "steady_compressor",
+      "edits": [
+        {
+          "path": "outlets.0.mass_flow_kg_s",
+          "decimal": "2.1"
+        }
+      ],
+      "expected_classification": "DECIMAL_BINARY_AGREEMENT",
+      "expected_decimal_status": "FAIL",
+      "expected_core_status": "FAIL",
+      "interpretation": "Mass imbalance remains outside tolerance, irrespective of property-datum heuristics"
+    },
+    {
+      "id": "TP-006",
+      "base": "steady_compressor",
+      "edits": [
+        {
+          "path": "inlets.0.mass_flow_kg_s",
+          "decimal": "0"
+        },
+        {
+          "path": "outlets.0.mass_flow_kg_s",
+          "decimal": "0"
+        },
+        {
+          "path": "shaft_work_out_w",
+          "decimal": "0"
+        }
+      ],
+      "expected_classification": "DECIMAL_BINARY_AGREEMENT",
+      "expected_decimal_status": "PASS_IN_SCOPE",
+      "expected_core_status": "PASS_IN_SCOPE",
+      "interpretation": "Zero mass/energy transport has a scoped balance pass, not equipment validity"
+    },
+    {
+      "id": "TP-007",
+      "base": "storage_interval",
+      "edits": [],
+      "expected_classification": "DECIMAL_BINARY_AGREEMENT",
+      "expected_decimal_status": "PASS_IN_SCOPE",
+      "expected_core_status": "PASS_IN_SCOPE",
+      "interpretation": "Storage-interval energy and capacity equations agree on normal scale"
+    },
+    {
+      "id": "TP-008",
+      "base": "steady_compressor",
+      "edits": [
+        {
+          "path": "inlets.0.mass_flow_kg_s",
+          "decimal": "1e155"
+        },
+        {
+          "path": "outlets.0.mass_flow_kg_s",
+          "decimal": "1e155"
+        },
+        {
+          "path": "inlets.0.specific_enthalpy_j_kg",
+          "decimal": "1e153"
+        },
+        {
+          "path": "outlets.0.specific_enthalpy_j_kg",
+          "decimal": "1e153"
+        },
+        {
+          "path": "shaft_work_out_w",
+          "decimal": "0"
+        }
+      ],
+      "expected_classification": "CORE_REJECTED",
+      "expected_decimal_status": null,
+      "expected_core_status": "INVALID_INPUT",
+      "interpretation": "Finite inputs can create sum overflow when reference numerator exceeds binary64"
+    },
+    {
+      "id": "TP-009",
+      "base": "steady_compressor",
+      "edits": [
+        {
+          "path": "inlets.0.specific_enthalpy_j_kg",
+          "decimal": "300000"
+        },
+        {
+          "path": "outlets.0.specific_enthalpy_j_kg",
+          "decimal": "420000.25"
+        }
+      ],
+      "expected_classification": "DECIMAL_BINARY_AGREEMENT",
+      "expected_decimal_status": "PASS_IN_SCOPE",
+      "expected_core_status": "PASS_IN_SCOPE",
+      "interpretation": "0.5 W residual is inside 1 W absolute floor, not exact conservation"
+    },
+    {
+      "id": "TP-010",
+      "base": "steady_compressor",
+      "edits": [
+        {
+          "path": "inlets.0.specific_enthalpy_j_kg",
+          "decimal": "300000"
+        },
+        {
+          "path": "outlets.0.specific_enthalpy_j_kg",
+          "decimal": "420000.75"
+        }
+      ],
+      "expected_classification": "DECIMAL_BINARY_AGREEMENT",
+      "expected_decimal_status": "FAIL",
+      "expected_core_status": "FAIL",
+      "interpretation": "1.5 W residual exceeds 1 W absolute floor"
+    }
+  ]
+}

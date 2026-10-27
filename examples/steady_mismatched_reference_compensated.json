@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "steady_control_volume",
+  "case_id": "synthetic_mismatched_reference_compensated",
+  "provenance": {
+    "evidence_class": "hand_constructed",
+    "declared_source": "Synthetic reference-mismatch counterexample; outlet enthalpy offset is compensated by shaft work"
+  },
+  "assumptions": {
+    "steady_state": true,
+    "neglect_kinetic_potential": true
+  },
+  "inlets": [
+    {
+      "name": "inlet",
+      "mass_flow_kg_s": 2,
+      "specific_enthalpy_j_kg": 300000
+    }
+  ],
+  "outlets": [
+    {
+      "name": "outlet",
+      "mass_flow_kg_s": 2,
+      "specific_enthalpy_j_kg": 520000
+    }
+  ],
+  "heat_into_volume_w": 0,
+  "shaft_work_out_w": -440000
+}

@@ -13,6 +13,16 @@
 > validated or qualified for operational control, engineering certification,
 > procurement decisions, or nuclear safety assessments. No PyPI or Zenodo release is claimed; the public GitHub repository is a review-stage alpha.
 
+## Why this exists
+
+I like working with energy models, but a successful simulation run does not settle every engineering question. A model can produce neat-looking outputs while a sign convention, boundary, or assumption is wrong.
+
+I started EnerLint to ask one small question independently of the originating solver: **do these exported quantities satisfy the physical relationships we said they should?**
+
+Even that question has a catch. In the first benchmark, six deliberately introduced inconsistencies are flagged, but a compensating compressor error **still passes**. The check is not broken; the underlying equations cannot distinguish two internally balanced operating points without extra evidence. I think that limitation belongs on the front page, not in the fine print.
+
+[Read the worked example and the numbers behind it](https://open-energy-methods.github.io/notes/001-a-pass-isnt-proof.html).
+
 The goal is to detect numerical and physical *inconsistencies in exported model
 results* without trusting the originating solver's convergence flag or residuals.
 A passing conservation check does **not** prove that the model is realistic, that
@@ -123,14 +133,12 @@ require separate publication steps and a fresh review of benchmarks and scope.
 Contributions welcome after repository publication. MIT licensed.
 
 
-## Organization
+## About the workbench
 
-EnerLint is developed under [Open Energy Methods](https://github.com/Open-Energy-Methods), an independent open-source research-software initiative. See [branding](docs/BRANDING.md).
+EnerLint is the first project under [Open Energy Methods](https://github.com/Open-Energy-Methods), my independent open-source workbench for computational energy engineering. It is not currently a product of an incorporated company, a certification tool, or an externally validated diagnostic service.
 
-Follow [Open Energy Methods on LinkedIn](https://www.linkedin.com/company/open-energy-methods) for organization updates.
+The [OEM website](https://open-energy-methods.github.io/) has the longer story and technical field notes. The approved [brand assets](https://github.com/Open-Energy-Methods/.github/tree/main/assets/brand/) are maintained centrally.
 
-## Maintainers, issue tracking and brand
+If you find an error in the derivations, a false alarm, a case that slips through, or a native tool that already does the job better, please [open an issue](https://github.com/Open-Energy-Methods/enerlint/issues). The work is organized through the [scientific roadmap](https://github.com/Open-Energy-Methods/enerlint/issues/36) and [OEM Agile playbook](https://github.com/Open-Energy-Methods/.github/blob/main/docs/AGILE_PLAYBOOK.md). These are planning aids, not measures of scientific maturity.
 
-EnerLint is maintained under [Open Energy Methods](https://github.com/Open-Energy-Methods), an independent open-source research-software initiative. The [approved OEM vector brand assets](https://github.com/Open-Energy-Methods/.github/tree/main/assets/brand/) are maintained centrally by the organization rather than duplicated in this repository.
-
-Our scientific and user-research development backlog is tracked through [EnerLint issues](https://github.com/Open-Energy-Methods/enerlint/issues), [the scientific roadmap](https://github.com/Open-Energy-Methods/enerlint/issues/36), and the [OEM Agile workflow](https://github.com/Open-Energy-Methods/.github/blob/main/docs/AGILE_PLAYBOOK.md). Work type, priority, severity, stage and sprint are managed in issue fields/labels; a priority label is not evidence of a defect, and passing our checks does not confer engineering certification.
+[OEM on LinkedIn](https://www.linkedin.com/company/open-energy-methods)

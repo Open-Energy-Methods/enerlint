@@ -20,9 +20,17 @@
 - [ ] Replace/generalize demonstration fixtures with real exported model
       results from at least one consented publicly shareable source
 - [ ] Compare fault detection with incumbent modeling tools
-- [ ] Build wheel/sdist in GitHub CI and audit included files
+- [x] Build wheel/sdist on GitHub CI across the supported OS/Python matrix and smoke-test each in a fresh virtual environment ([reproducibility protocol](REPRODUCIBILITY.md))
+- [ ] Complete release-manifest/license/provenance audit of built distributions
 - [ ] Add contribution, documentation and security procedures
 - [ ] Verify package and project naming/ownership on PyPI and GitHub
+
+## Research notes / comparisons
+
+- [x] Publish two complete, human-checkable analytical [benchmark case cards](BENCHMARK_CASE_CARDS.md) (maintainer-derived, **not externally reviewed**).
+- [x] Record explicit independent-arithmetic regression checks for those cards.
+- [x] Draft a prespecified [native thermal-tool comparison](EXPERIMENT_D1_THERMAL_COMPARISON.md) with equal-information controls; **experiment not yet run**.
+- [ ] Obtain independent critique and compare with one real external implementation; retain null/negative findings.
 
 ## v0.2 (candidate)
 

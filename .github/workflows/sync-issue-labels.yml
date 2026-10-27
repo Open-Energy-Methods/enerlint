@@ -1,0 +1,54 @@
+name: Synchronize colored research and Agile issue labels
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/sync-issue-labels.yml
+permissions:
+  contents: read
+  issues: write
+jobs:
+  synchronize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Create or recolor canonical issue labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, urllib.parse, urllib.error
+          repo=os.environ["GITHUB_REPOSITORY"]
+          token=os.environ["GH_TOKEN"]
+          headers={"Authorization":f"Bearer {token}","Accept":"application/vnd.github+json",
+          "X-GitHub-Api-Version":"2022-11-28","User-Agent":"OEM-label-color-sync"}
+          labels = [["priority:P0","B42318","Immediate foundation or release-gating work."],["priority:P1","B65D08","Evidence and adoption after core foundations."],["priority:P2","6B7280","Conditional or exploratory future work."],["severity:critical","8B1E24","Potential serious IP, confidentiality, safety-claim or evidence-integrity consequence if mishandled; not proof of an incident."],["severity:high","C2410C","Material potential numerical/research integrity consequence."],["severity:medium","CA8A04","Moderate likely workflow, usability, or delivery consequence."],["severity:low","64748B","Low immediate impact or optional future improvement."],["type:task","6B7280","Task or operational work."],["type:research","6D28D9","Evidence gathering or technical research."],["type:experiment","7C3AED","Prespecified scientific or market test."],["type:feature","2563EB","Implement software functionality."],["type:documentation","475569","Write, explain, or document results."],["type:governance","7C3AED","Decision rights, legal/organizational policies, and release controls."],["type:bug","D12D39","Confirmed defect requiring a reproducible fix."],["area:physics","087E8B","Physical equations, contracts and thermodynamic correctness."],["area:benchmarks","238636","Reference cases, fault injection and comparative benchmarks."],["area:reporting","0969DA","Machine-readable reports, provenance and user outputs."],["area:adapters","0078A8","Cross-simulator interface and exported data mapping."],["area:ci","4F46E5","Continuous integration, builds, packaging and security."],["area:research","8250DF","Scientific methods and evidence evaluation."],["area:commercial","A45A10","Customer research and possible operating models."],["area:legal","A33F25","IP, liability, data rights and legal diligence."],["area:community","1D7F69","Contributors, independent users and reviewer process."],["area:branding","0E7490","Public identity, approved brand use and website."],["area:governance","7158AD","Governance and strategic decision tracking."],["stage:G0","1D4ED8","Stage 0: immediate foundation and credibility."],["stage:G1","087F8C","Stage 1: thermal scientific core."],["stage:G2","2563A9","Stage 2: external research evidence."],["stage:G3","367D46","Stage 3: bounded external pilot."],["stage:G4","64748B","Stage 4: conditional growth."],["workflow:backlog","9CA3AF","Not yet committed to a sprint."],["workflow:todo","3B82F6","Ready to begin in an active sprint."],["workflow:in-progress","D97706","Implementation or substantive research underway."],["workflow:in-review","8250DF","Awaiting review against acceptance criteria."],["workflow:blocked","DC2626","Cannot proceed without resolving a stated blocker."],["workflow:done","238636","Acceptance criteria met; issue should also be closed."],["agile:epic","5B21B6","Cross-issue outcome with linked stories and tasks."],["agile:story","0F766E","User-centered increment with testable acceptance conditions."],["agile:task","475569","Concrete unit of implementation or research work."],["agile:spike","B7791F","Time-boxed investigation that reduces uncertainty."],["sprint:S0","0E7490","Initial sprint from 27 October to 8 November 2026."],["sprint:S1","155E75","Sprint 1: 9–22 November 2026."],["sprint:S2","115E59","Sprint 2: 23 November–6 December 2026."],["sprint:S3","3B6B57","Sprint 3: 7–20 December 2026."],["points:1","E8EEF8","Estimated story points 1."],["points:2","D2E4F9","Estimated story points 2."],["points:3","B8D8F1","Estimated story points 3."],["points:5","91BEEC","Estimated story points 5."],["points:8","6A9DCF","Estimated story points 8."]]
+          def api(method,path,payload=None):
+              url=f"https://api.github.com/repos/{repo}/{path}"
+              body=json.dumps(payload).encode() if payload is not None else None
+              request=urllib.request.Request(url,data=body,headers=headers,method=method)
+              if body is not None: request.add_header("Content-Type","application/json")
+              with urllib.request.urlopen(request,timeout=30) as reply:
+                  raw=reply.read()
+                  return json.loads(raw) if raw else None
+          existing={}
+          for page in range(1,5):
+              page_labels=api("GET",f"labels?per_page=100&page={page}")
+              for label in page_labels: existing[label["name"]]=label
+              if len(page_labels)<100: break
+          added=updated=unchanged=0
+          for name,color,description in labels:
+              if name not in existing:
+                  api("POST","labels",{"name":name,"color":color,"description":description})
+                  added+=1
+              elif existing[name]["color"].lower()!=color.lower() or (existing[name].get("description") or "")!=description:
+                  api("PATCH","labels/"+urllib.parse.quote(name,safe=""),
+                      {"new_name":name,"color":color,"description":description})
+                  updated+=1
+              else:
+                  unchanged+=1
+          print(f"Synced {len(labels)} OEM tags in {repo}. Created {added}, recolored/updated {updated}, unchanged {unchanged}.")
+          
+          PY

@@ -1,0 +1,487 @@
+{
+  "catalog_id": "enerlint-analytical-references-v0.1",
+  "version": "0.1.0",
+  "created_utc": "2026-10-27",
+  "evidence_class": "hand_constructed",
+  "author_review_status": "maintainer-derived arithmetic, not independently peer reviewed",
+  "scope": "Strict SI steady nonreacting CV or constant-rate single storage interval. All oracles specified independently from the checker implementation.",
+  "not_claimed": [
+    "Empirical validation",
+    "Independent scientific peer review",
+    "Sensitivity/specificity on unknown failures",
+    "Thermodynamic property accuracy",
+    "Complete physical boundary"
+  ],
+  "cases": [
+    {
+      "benchmark_id": "TH-CV-001",
+      "benchmark_version": "0.1",
+      "case_file": "examples/steady_compressor.json",
+      "system": "adiabatic compressor",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": 0,
+        "steady_energy_input_w": 600000,
+        "steady_energy_output_w": 840000,
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": -240000,
+        "mass_scale_kg_s": 4,
+        "enthalpy_reference_j_kg": 360000,
+        "steady_energy_scale_w": 480000,
+        "storage_delta_j": null,
+        "storage_charge_integrated_j": null,
+        "storage_discharge_integrated_j": null,
+        "storage_loss_integrated_j": null,
+        "storage_scale_j": null
+      },
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 4,
+          "threshold": 4e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 480000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "shaft_work_out_w",
+        "replacement": 240000,
+        "expected_failure_check": "steady_first_law",
+        "expected_failure_residual": -480000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-CV-002",
+      "benchmark_version": "0.1",
+      "case_file": "examples/steady_turbine.json",
+      "system": "adiabatic turbine",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": 0,
+        "steady_energy_input_w": 1400000,
+        "steady_energy_output_w": 1000000,
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 400000,
+        "mass_scale_kg_s": 4,
+        "enthalpy_reference_j_kg": 600000,
+        "steady_energy_scale_w": 800000,
+        "storage_delta_j": null,
+        "storage_charge_integrated_j": null,
+        "storage_discharge_integrated_j": null,
+        "storage_loss_integrated_j": null,
+        "storage_scale_j": null
+      },
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 4,
+          "threshold": 4e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 800000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "shaft_work_out_w",
+        "replacement": -400000,
+        "expected_failure_check": "steady_first_law",
+        "expected_failure_residual": 800000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-CV-003",
+      "benchmark_version": "0.1",
+      "case_file": "examples/steady_heat_exchanger.json",
+      "system": "adiabatic two-circuit exchanger",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": 0,
+        "steady_energy_input_w": 1100000,
+        "steady_energy_output_w": 1100000,
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 0,
+        "mass_scale_kg_s": 6,
+        "enthalpy_reference_j_kg": 366666.6666666667,
+        "steady_energy_scale_w": 866666.6666666666,
+        "storage_delta_j": null,
+        "storage_charge_integrated_j": null,
+        "storage_discharge_integrated_j": null,
+        "storage_loss_integrated_j": null,
+        "storage_scale_j": null
+      },
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 6,
+          "threshold": 6.000000000000001e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 866666.6666666666,
+          "threshold": 1,
+          "unit": "W"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "outlets.0.specific_enthalpy_j_kg",
+        "replacement": 201000,
+        "expected_failure_check": "steady_first_law",
+        "expected_failure_residual": -1000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-ST-001",
+      "benchmark_version": "0.1",
+      "case_file": "examples/storage_interval.json",
+      "system": "thermal storage charge and loss",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": null,
+        "steady_energy_input_w": null,
+        "steady_energy_output_w": null,
+        "heat_into_volume_w": null,
+        "shaft_work_out_w": null,
+        "mass_scale_kg_s": null,
+        "enthalpy_reference_j_kg": null,
+        "steady_energy_scale_w": null,
+        "storage_delta_j": 216000000,
+        "storage_charge_integrated_j": 432000000,
+        "storage_discharge_integrated_j": 180000000,
+        "storage_loss_integrated_j": 36000000,
+        "storage_scale_j": 864000000
+      },
+      "expected_checks": {
+        "storage_energy_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 864000000,
+          "threshold": 8.64,
+          "unit": "J"
+        },
+        "storage_capacity": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 0,
+          "threshold": 0,
+          "unit": "J"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "energy_final_j",
+        "replacement": 2221000000,
+        "expected_failure_check": "storage_energy_closure",
+        "expected_failure_residual": 5000000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-CV-004",
+      "benchmark_version": "0.1",
+      "case_file": "examples/steady_nonadiabatic_compressor.json",
+      "system": "nonadiabatic compressor",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": 0,
+        "steady_energy_input_w": 200000,
+        "steady_energy_output_w": 260000,
+        "heat_into_volume_w": 10000,
+        "shaft_work_out_w": -50000,
+        "mass_scale_kg_s": 2,
+        "enthalpy_reference_j_kg": 230000,
+        "steady_energy_scale_w": 120000,
+        "storage_delta_j": null,
+        "storage_charge_integrated_j": null,
+        "storage_discharge_integrated_j": null,
+        "storage_loss_integrated_j": null,
+        "storage_scale_j": null
+      },
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 2,
+          "threshold": 2e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 120000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "heat_into_volume_w",
+        "replacement": -10000,
+        "expected_failure_check": "steady_first_law",
+        "expected_failure_residual": -20000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-CV-005",
+      "benchmark_version": "0.1",
+      "case_file": "examples/steady_mixer_adiabatic.json",
+      "system": "two-inlet adiabatic mixer",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": 0,
+        "steady_energy_input_w": 1100000,
+        "steady_energy_output_w": 1100000,
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 0,
+        "mass_scale_kg_s": 10,
+        "enthalpy_reference_j_kg": 220000,
+        "steady_energy_scale_w": 480000,
+        "storage_delta_j": null,
+        "storage_charge_integrated_j": null,
+        "storage_discharge_integrated_j": null,
+        "storage_loss_integrated_j": null,
+        "storage_scale_j": null
+      },
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 10,
+          "threshold": 1e-7,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 480000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "outlets.0.specific_enthalpy_j_kg",
+        "replacement": 219000,
+        "expected_failure_check": "steady_first_law",
+        "expected_failure_residual": 5000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-CV-006",
+      "benchmark_version": "0.1",
+      "case_file": "examples/steady_splitter_adiabatic.json",
+      "system": "equal-enthalpy adiabatic splitter",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": 0,
+        "steady_energy_input_w": 1250000,
+        "steady_energy_output_w": 1250000,
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 0,
+        "mass_scale_kg_s": 10,
+        "enthalpy_reference_j_kg": 250000,
+        "steady_energy_scale_w": 0,
+        "storage_delta_j": null,
+        "storage_charge_integrated_j": null,
+        "storage_discharge_integrated_j": null,
+        "storage_loss_integrated_j": null,
+        "storage_scale_j": null
+      },
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 10,
+          "threshold": 1e-7,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 0,
+          "threshold": 1,
+          "unit": "W"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "outlets.0.mass_flow_kg_s",
+        "replacement": 2.25,
+        "expected_failure_check": "steady_mass_closure",
+        "expected_failure_residual": -0.25,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-CV-007",
+      "benchmark_version": "0.1",
+      "case_file": "examples/steady_turbine_heat_loss.json",
+      "system": "turbine with external heat loss",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": 0,
+        "steady_energy_input_w": 1200000,
+        "steady_energy_output_w": 900000,
+        "heat_into_volume_w": -30000,
+        "shaft_work_out_w": 270000,
+        "mass_scale_kg_s": 3,
+        "enthalpy_reference_j_kg": 700000,
+        "steady_energy_scale_w": 600000,
+        "storage_delta_j": null,
+        "storage_charge_integrated_j": null,
+        "storage_discharge_integrated_j": null,
+        "storage_loss_integrated_j": null,
+        "storage_scale_j": null
+      },
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 3,
+          "threshold": 3.0000000000000004e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 600000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "heat_into_volume_w",
+        "replacement": 30000,
+        "expected_failure_check": "steady_first_law",
+        "expected_failure_residual": 60000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-CV-008",
+      "benchmark_version": "0.1",
+      "case_file": "examples/steady_heat_exchanger_heat_loss.json",
+      "system": "exchanger with boundary heat loss",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": 0,
+        "steady_energy_input_w": 700000,
+        "steady_energy_output_w": 670000,
+        "heat_into_volume_w": -30000,
+        "shaft_work_out_w": 0,
+        "mass_scale_kg_s": 6,
+        "enthalpy_reference_j_kg": 228333.33333333334,
+        "steady_energy_scale_w": 816666.6666666666,
+        "storage_delta_j": null,
+        "storage_charge_integrated_j": null,
+        "storage_discharge_integrated_j": null,
+        "storage_loss_integrated_j": null,
+        "storage_scale_j": null
+      },
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 6,
+          "threshold": 6.000000000000001e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 816666.6666666666,
+          "threshold": 1,
+          "unit": "W"
+        }
+      },
+      "deliberate_mutation": {
+        "field": "heat_into_volume_w",
+        "replacement": 0,
+        "expected_failure_check": "steady_first_law",
+        "expected_failure_residual": 30000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    },
+    {
+      "benchmark_id": "TH-ST-002",
+      "benchmark_version": "0.1",
+      "case_file": "examples/storage_discharge_no_capacity.json",
+      "system": "thermal storage discharge, unspecified capacity",
+      "expected_report_status": "PASS_IN_SCOPE",
+      "independent_reference": {
+        "steady_mass_residual_kg_s": null,
+        "steady_energy_input_w": null,
+        "steady_energy_output_w": null,
+        "heat_into_volume_w": null,
+        "shaft_work_out_w": null,
+        "mass_scale_kg_s": null,
+        "enthalpy_reference_j_kg": null,
+        "steady_energy_scale_w": null,
+        "storage_delta_j": -336000000,
+        "storage_charge_integrated_j": 0,
+        "storage_discharge_integrated_j": 288000000,
+        "storage_loss_integrated_j": 48000000,
+        "storage_scale_j": 672000000
+      },
+      "expected_checks": {
+        "storage_energy_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 672000000,
+          "threshold": 6.72,
+          "unit": "J"
+        },
+        "storage_capacity": {
+          "status": "NOT_CHECKED",
+          "residual": null,
+          "scale": null,
+          "threshold": null,
+          "unit": null
+        }
+      },
+      "deliberate_mutation": {
+        "field": "energy_final_j",
+        "replacement": 365000000,
+        "expected_failure_check": "storage_energy_closure",
+        "expected_failure_residual": 1000000,
+        "expected_report_status": "FAIL"
+      },
+      "source_permission": "Maintainer-declared original synthetic case under repository MIT license; no third-party measured data.",
+      "reviewer_status": "Maintainer-authored independent hand arithmetic only; external critique outstanding"
+    }
+  ]
+}

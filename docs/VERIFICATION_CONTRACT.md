@@ -121,7 +121,12 @@ Energy scale: sum of absolute `m_dot * (h - h_ref)` for all in/out streams,
 plus |Q| + |W|, where `h_ref` is the mass-weighted mean of all inlet/outlet
 specific enthalpies (zero if all flows are zero). For a mass-balanced boundary,
 this tolerance scale is invariant under a **common** enthalpy datum shift;
-independently chosen material/species reference states are not addressed.
+independently chosen material/species reference states are not addressed by
+the core balance engine. The [optional property-data acceptance and reference
+review](PROPERTY_DATA_ACCEPTANCE.md) checks author-declared fluid/circuit metadata,
+but cannot establish thermophysical property validity, common actual datums, or
+backend correspondence. Separate mass-balanced material circuits can have
+separate offsets; a shared loop cannot freely mix reference settings.
 Storage scale: |delta E| plus magnitudes of integrated heat flows. Threshold
 and scale are included in report.
 

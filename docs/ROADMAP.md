@@ -4,6 +4,7 @@
 
 - [x] Strict JSON contract with explicit SI units and provenance declaration
 - [x] Independent steady mass and energy residuals for non-reactive CVs
+- [x] Worked boundary/sign review, nonadiabatic counterexample and optional author-attested preflight ([review guide](CONTROL_VOLUME_BOUNDARY_REVIEW.md))
 - [x] Energy interval accounting and optional storage capacity
 - [x] Numeric tolerances visible alongside each residual
 - [x] Publish a [strict v0.1.0 JSON report schema](REPORT_SCHEMA.md) with stable check IDs and status constraints

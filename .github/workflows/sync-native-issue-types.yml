@@ -6,7 +6,7 @@ on:
     paths:
       - .github/workflows/sync-native-issue-types.yml
   issues:
-    types: [opened, labeled]
+    types: [opened, labeled, edited]
 permissions:
   contents: read
   issues: write
@@ -57,7 +57,9 @@ jobs:
           
           def desired(labels, title):
               labels = {x["name"] for x in labels}
-              if "agile:epic" in labels or title.startswith(("EPIC ", "ROADMAP ")):
+              if "agile:initiative" in labels:
+        return "Initiative"
+    if "agile:epic" in labels or title.startswith(("EPIC ", "ROADMAP ")):
                   return "Epic"
               if "agile:spike" in labels:
                   return "Spike"
@@ -87,7 +89,7 @@ jobs:
                   want = desired(issue.get("labels", []), issue.get("title",""))
                   native = available.get(want.casefold())
                   if native is None:
-                      if want == "Epic":
+                      if want in ("Epic", "Initiative"):
                           deferred.setdefault(want, []).append(issue["number"])
                           continue  # Don't disguise Epics as Tasks.
                       substitute = fallback.get(want, "Task")

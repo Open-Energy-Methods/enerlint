@@ -132,6 +132,7 @@ with wrong inputs may still satisfy conservation.
 - [Worked analytical benchmark case cards (compressor and thermal store)](docs/BENCHMARK_CASE_CARDS.md)
 - [Initial synthetic benchmark results](docs/RESULTS.md)
 - [Prespecified native thermal diagnostic comparison (D1; not yet run)](docs/EXPERIMENT_D1_THERMAL_COMPARISON.md)
+- [CI security, artifact auditing, pinned actions and reproducibility manifest](docs/CI_SECURITY_AND_REPRODUCIBILITY.md)
 - [Future adapter contract](docs/ADAPTER_SPEC.md)
 - [Competitive overlap and differentiation](docs/PRIOR_ART.md)
 - [KTH research concept note](docs/KTH_CONCEPT_NOTE.md)

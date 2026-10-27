@@ -68,6 +68,7 @@ python -m pip install -e ".[dev]"
 python -m pytest -q
 python scripts/run_foundation_benchmark.py
 python scripts/run_analytical_catalog.py
+python scripts/run_manufactured_limits.py
 enerlint check examples/steady_compressor.json --output reports/compressor.json
 enerlint check examples/steady_heat_exchanger.json
 enerlint check examples/steady_turbine.json

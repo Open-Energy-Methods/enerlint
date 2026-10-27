@@ -21,6 +21,7 @@ python -m venv .venv
 python -m pip install -e ".[dev]"
 python -m pytest -q
 python scripts/run_foundation_benchmark.py
+python scripts/run_analytical_catalog.py
 python -m enerlint check examples/steady_compressor.json
 ```
 
@@ -77,7 +78,19 @@ Successful CI shows this bounded protocol worked in those environments. It does 
 
 ## Expected reference results
 
-- The original alpha smoke benchmark currently includes four hand-built baselines, six selected injected faults and one deliberately undetected compensated error.
+The newer **ten-case** [catalogue](BENCHMARK_CASE_CARDS.md) is separate from the
+original four-case foundation demonstration. Run `python scripts/run_analytical_catalog.py`
+to recompute its [frozen SI oracle](analytical_reference_v0.1.json) using
+Decimal arithmetic independent of the core checker and write a per-run ledger to
+`artifacts/ci/analytical_catalog_v0.1.json`. Each of ten selected positive
+cases and ten deliberate faults has an explicit expected result. These are
+**author-selected and maintainer-derived** and do not estimate real-world
+sensitivity or false-positive rates. The ledger is uploaded with the audited
+wheel/sdist and manifest by GitHub Actions. No independent reviewer has
+adjudicated these cases.
+
+
+- The original alpha smoke benchmark still includes **four** hand-built baselines, **six** selected injected faults and **one** deliberately undetected compensated error. Its original results are not overwritten by the expanded catalogue.
 - The [benchmark case cards](BENCHMARK_CASE_CARDS.md) document two cases with hand arithmetic and default thresholds that can be checked *without reading source code*.
 - The [foundation results](RESULTS.md) label developer-selected cases as self-tests.
 - No sensitivity/specificity estimate over real-world mistakes, model validation, or independent reference audit follows from these test counts.

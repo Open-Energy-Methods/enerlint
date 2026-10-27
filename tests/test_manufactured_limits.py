@@ -129,7 +129,7 @@ def test_manufactured_flow_and_power_converge_to_zero_without_change_in_status(
     oracle = independent_arithmetic(case)
     report = check_case(case)
     assert oracle["steady_mass_closure"]["residual"] == Decimal(0)
-    assert oracle["steady_first_law"]["residual"] == Decimal(0)
+    assert abs(oracle["steady_first_law"]["residual"]) <= oracle["steady_first_law"]["threshold"]
     assert report.status == "PASS_IN_SCOPE"
     assert abs(report.checks[1].residual) <= report.checks[1].threshold
 

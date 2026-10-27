@@ -99,7 +99,13 @@ metadata review as property-data validation.
 
 See [manufactured/limiting numerical cases](MANUFACTURED_LIMITS.md) for explicit 1 W and 1e−9 kg/s inclusive thresholds, zero flow, extreme property reference values, and charge/discharge cancellation. In particular, a passing result can contain a real nonzero residual **inside** tolerance; an absent reference or strict-invalid numeric operation must not be converted into PASS. The two deliberately tolerated discrepancies and their independent reference equations are preserved in the [frozen catalogue](manufactured_limits_v0.1.json) and CI ledger. These are developer-authored software tests; their existence is **not** validation of the numeric tolerance policy for instruments or real models.
 
-## 8. External critique request — still open
+## 8. Concrete binary64 decision disagreements (maintainer review)
+
+A separately implemented [Decimal-text numerical review](NUMERICAL_CONDITIONING_REVIEW_2026-10-27.md) now records **two concrete synthetic decision disagreements**. One mass-closed compressor shifted by a common 1e18 J/kg property zero has an exact decimal JSON first-law residual of 0 W but the current binary64 core reports +128 W and FAIL. Another case with a 1e16 J/kg common offset and a +1 J/kg outgoing perturbation has an exact −2 W residual but the core reports 0 W and PASS. These are **arithmetic disagreements on developer-selected cases**, not measured false-positive or false-negative rates.
+
+The new [optional precision preflight](../scripts/audit_numeric_conditioning.py) compares exact arithmetic on source decimal literals, exact arithmetic on binary64-converted operands, and core arithmetic, preserving warnings separately from the frozen v0.1 schema. A [ten-case pinned stress study](tolerance_precision_cases_v0.1.json) records the disagreements and representability abstentions. This heuristic review is not a numerical error bound, and it does not establish defensible industrial tolerance thresholds.
+
+## 9. External critique request — still open
 
 A reviewer should independently assess:
 

@@ -1,9 +1,6 @@
 <p align="center">
   <a href="https://github.com/Open-Energy-Methods">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Open-Energy-Methods/.github/main/assets/brand/oem-logo-symbol-reversed.svg">
-      <img src="https://raw.githubusercontent.com/Open-Energy-Methods/.github/main/assets/brand/oem-logo-symbol-primary.svg" alt="Open Energy Methods logo" width="92">
-    </picture>
+    <img src="https://raw.githubusercontent.com/Open-Energy-Methods/.github/main/assets/brand/oem-logo-full-primary.svg" alt="Open Energy Methods — full-color navy and teal logo" width="480">
   </a>
 </p>
 

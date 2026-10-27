@@ -36,8 +36,8 @@
 
 ## Research notes / comparisons
 
-- [x] Publish two complete, human-checkable analytical [benchmark case cards](BENCHMARK_CASE_CARDS.md) (maintainer-derived, **not externally reviewed**).
-- [x] Record explicit independent-arithmetic regression checks for those cards.
+- [x] Publish **ten** analytical [benchmark case cards](BENCHMARK_CASE_CARDS.md), independently hand-checkable with a [versioned SI oracle](analytical_reference_v0.1.json) and ten developer-selected failing mutations (maintainer-authored, **not externally reviewed**).
+- [x] Record separately implemented [Decimal-based reference arithmetic](../scripts/run_analytical_catalog.py) and an automated ten-case/twenty-run self-test ledger; preserve the earlier four-case result.
 - [x] Draft a prespecified [native thermal-tool comparison](EXPERIMENT_D1_THERMAL_COMPARISON.md) with equal-information controls; **experiment not yet run**.
 - [ ] Obtain independent critique and compare with one real external implementation; retain null/negative findings.
 

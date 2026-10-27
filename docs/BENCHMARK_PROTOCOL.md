@@ -54,15 +54,15 @@ keeping enthalpy endpoints fixed: conservation remains satisfied. This is a
 **test that EnerLint must not pretend to detect**. Detection without a
 separate operating-point or equipment map reference would be a false claim.
 
-## Expansion gate (not yet achieved)
+## Expansion evidence and gates (updated 27 October 2026)
 
-- Minimum 10 independently documented reference problems.
-- Minimum 20 diverse and prespecified fault cases with expected outcomes.
-- At least 2 independently implemented modeling tools.
-- At least 1 reviewer outside the package author to evaluate the cases.
-- Measure fault-detection rate and false-positive rate on separate case families.
-- Frozen numerical tolerances before holding-out benchmark execution.
-- Publish failures and known escapes alongside successful detections.
+- [x] Minimum 10 **maintainer-derived, independently checkable** analytical reference problems; [worked cases](BENCHMARK_CASE_CARDS.md), [frozen oracles](analytical_reference_v0.1.json), and [Decimal audit runner](../scripts/run_analytical_catalog.py). This does **not** satisfy external independent review.
+- [ ] Minimum 20 **diverse**, prespecified, **independently reviewed** fault cases. The new ten-case catalogue includes **10 selected developer-authored mutations**, but several fault mechanisms overlap, so 10/10 detected is not an empirical performance statistic.
+- [ ] At least 2 independently implemented modeling tools.
+- [ ] At least 1 reviewer outside the package author to evaluate the cases.
+- [ ] Measure detection and false-alarm rates on held-out, independent case families.
+- [ ] Independently justify/freeze numerical tolerances **before** held-out benchmark execution.
+- [x] Publish selected failures and a known compensated pass with the developer-authored cases, while preserving the original foundation ledger.
 
 A peer-reviewed publication or institutionally adopted tool requires much more
 than these initial thresholds, which are targets rather than evidence of quality.

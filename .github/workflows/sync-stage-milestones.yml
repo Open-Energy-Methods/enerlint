@@ -1,0 +1,91 @@
+name: Synchronize OEM stage milestones
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/sync-stage-milestones.yml
+permissions:
+  contents: read
+  issues: write
+jobs:
+  synchronize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Create missing milestones and assign issues by stage labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          repo = os.environ["REPOSITORY"]
+          token = os.environ["GH_TOKEN"]
+          headers = {
+              "Authorization": f"Bearer {token}",
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28",
+              "User-Agent": "OEM-milestone-bootstrap",
+          }
+          milestone_specs = [
+              ("G0", "G0 | Foundation (Nov 2026)", "Foundation: truthful claims, science contracts, governance and software reproducibility.", "2026-11-30T23:59:00Z"),
+              ("G1", "G1 | Thermal core (Dec 2026)", "Thermal reference cases, injection tests and independent physical checks.", "2026-12-31T23:59:00Z"),
+              ("G2", "G2 | External evidence (Mar 2027)", "External model comparisons, independent research feedback and customer discovery.", "2027-03-31T23:59:00Z"),
+              ("G3", "G3 | Bounded pilot (Jun 2027)", "Permission-cleared pilot studies and evidence of real-world value.", "2027-06-30T23:59:00Z"),
+              ("G4", "G4 | Conditional growth (2027+)", "Research and commercial expansion only when science, demand and legal gates permit.", None),
+          ]
+
+          def api(method, path, payload=None):
+              url = f"https://api.github.com/repos/{repo}/{path}"
+              body = json.dumps(payload).encode() if payload is not None else None
+              req = urllib.request.Request(url, data=body, headers=headers, method=method)
+              if body is not None:
+                  req.add_header("Content-Type", "application/json")
+              with urllib.request.urlopen(req, timeout=30) as resp:
+                  return json.load(resp)
+
+          existing = {}
+          for page in range(1, 4):
+              values = api("GET", f"milestones?state=all&per_page=100&page={page}")
+              for item in values:
+                  existing[item["title"]] = item["number"]
+              if len(values) < 100:
+                  break
+
+          milestone_ids = {}
+          for label, title, description, due_on in milestone_specs:
+              if title in existing:
+                  milestone_ids[label] = existing[title]
+              else:
+                  payload = {"title": title, "description": description, "state": "open"}
+                  if due_on:
+                      payload["due_on"] = due_on
+                  created = api("POST", "milestones", payload)
+                  milestone_ids[label] = created["number"]
+                  print(f"Created milestone: {title}")
+
+          assigned = 0
+          for page in range(1, 10):
+              issues = api("GET", f"issues?state=open&per_page=100&page={page}")
+              for issue in issues:
+                  if "pull_request" in issue:
+                      continue
+                  stages = [x["name"].split(":", 1)[1] for x in issue.get("labels", [])
+                            if x["name"].startswith("stage:")]
+                  if len(stages) != 1 or stages[0] not in milestone_ids:
+                      print(f"Skip ambiguous/unlabeled issue #{issue['number']}")
+                      continue
+                  target = milestone_ids[stages[0]]
+                  current = issue.get("milestone")
+                  if current is None or current["number"] != target:
+                      api("PATCH", f"issues/{issue['number']}", {"milestone": target})
+                      assigned += 1
+              if len(issues) < 100:
+                  break
+
+          print(f"Milestones ready: {len(milestone_ids)}; issue assignments updated: {assigned}.")
+          PY

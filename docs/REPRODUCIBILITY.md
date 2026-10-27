@@ -45,6 +45,18 @@ The smoke script creates a **new isolated virtual environment for each artifact*
 
 The script deliberately does **not** label any of those examples independently validated. It needs access to the checkout's example JSON to provide an input case, but it exercises the *installed* package for the numerical checks.
 
+## Route C: inspect build security and create a per-run manifest
+
+After Route B produces `dist/*.whl` and `dist/*.tar.gz`:
+
+```shell
+python scripts/audit_release_artifacts.py
+```
+
+This bounded check scans git-tracked source and both distribution archives for selected high-confidence secret formats, sensitive filenames, archive path hazards, missing package license/schema and unexpected runtime dependencies. It writes a **run-specific** manifest to `artifacts/ci/build-manifest.json` with the exact archive SHA-256 hashes, Python/build-tool versions and explicit limitations. It does **not** establish exhaustive secret detection, signed provenance or byte-for-byte reproducibility.
+
+The [Scientific core workflow](../.github/workflows/ci.yml) uploads this manifest **along with the audited wheel and sdist** as a 14-day GitHub Actions artifact. The SHA hashes describe that one build; a successful upload is not a tagged or reviewed release. See [security and artifact-audit control record](CI_SECURITY_AND_REPRODUCIBILITY.md).
+
 ## Current GitHub CI coverage
 
 The [Scientific core workflow](../.github/workflows/ci.yml) runs on Linux, Windows and macOS, using CPython 3.10 and 3.13. It performs an editable installation, the pytest suite, the synthetic benchmark ledger, the isolated wheel/sdist smoke test, and the CLI demonstrations.

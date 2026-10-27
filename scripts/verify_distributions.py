@@ -55,6 +55,9 @@ def check_wheel_contents(wheel: Path) -> None:
         assert any(p.startswith("enerlint-") and p.endswith(".dist-info/METADATA") for p in names), (
             "Missing wheel package metadata"
         )
+        assert "enerlint/schemas/report-v0.1.0.schema.json" in names, (
+            "Report JSON Schema must be shipped in wheel"
+        )
         assert not any("founders_research_bible" in p.lower() for p in names), (
             "Do not ship private planning documents"
         )
@@ -118,6 +121,39 @@ def check_install(artifact: Path) -> None:
             expected=2,
         )
         assert "INVALID_INPUT" in invalid.stderr
+
+        # The schema is packaged with the installed distribution, not read from
+        # the editable source tree or an external web location.
+        schema_check = run(
+            [
+                str(py), "-c",
+                "import json; from importlib.resources import files; "
+                "p = files('enerlint').joinpath('schemas', 'report-v0.1.0.schema.json'); "
+                "s = json.loads(p.read_text(encoding='utf-8')); "
+                "assert s['properties']['schema_version']['const'] == '0.1.0'; "
+                "print(s['title'])",
+            ],
+            cwd=scratch,
+        )
+        assert "report schema" in schema_check.stdout.lower()
+
+        # Rejected inputs can produce a machine-readable report without changing
+        # the documented stderr diagnostic and exit code 2.
+        invalid_report_path = scratch / "rejected_report.json"
+        rejected = check_code(
+            [
+                str(py), "-m", "enerlint", "check", str(invalid_input),
+                "--output", str(invalid_report_path),
+            ],
+            cwd=scratch,
+            expected=2,
+        )
+        assert "INVALID_INPUT" in rejected.stderr
+        invalid_report = json.loads(invalid_report_path.read_text(encoding="utf-8"))
+        assert invalid_report["status"] == "INVALID_INPUT"
+        assert invalid_report["case_id"] is None
+        assert invalid_report["source_fingerprint_sha256"] is None
+        assert invalid_report["checks"] == []
         print(f"PASS isolated {artifact.name} | import, PASS, FAIL, INVALID_INPUT")
 
 

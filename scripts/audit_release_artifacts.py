@@ -178,8 +178,16 @@ def audit_package(path: Path) -> dict:
     ]
     if runtime_dependencies:
         raise AuditError(f"Unexpected runtime dependencies: {runtime_dependencies!r}")
-    if not any(PurePosixPath(x).name == "LICENSE" for x in filenames):
-        raise AuditError("License file missing from distribution")
+    if metadata.get("License-Expression") != "MIT":
+        raise AuditError("Missing or incorrect SPDX License-Expression: expected MIT")
+    declared_licenses = metadata.get_all("License-File", [])
+    if "LICENSE" not in declared_licenses:
+        raise AuditError("Distribution metadata missing License-File: LICENSE")
+    license_paths = [x for x in filenames if PurePosixPath(x).name == "LICENSE"]
+    if len(license_paths) != 1:
+        raise AuditError("Expected exactly one distributed LICENSE file")
+    if not members[license_paths[0]].startswith(b"MIT License\\n".replace(b"\\n", b"\n")):
+        raise AuditError("Distributed license content does not begin with MIT License")
     return {
         "filename": path.name,
         "size_bytes": path.stat().st_size,
@@ -187,6 +195,7 @@ def audit_package(path: Path) -> dict:
         "member_count": len(members),
         "runtime_dependencies": runtime_dependencies,
         "contains_license": True,
+        "license_expression": "MIT",
         "contains_report_schema": True,
     }
 

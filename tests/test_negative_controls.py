@@ -112,7 +112,7 @@ def test_timestamp_probes_do_not_claim_temporal_validation(outcomes):
     assert all(r["observed_status"] == "INVALID_INPUT" for r in rejected)
     description_only = next(r for r in outcomes["cases"] if r["scenario_kind"] == "metadata_only")
     assert description_only["observed_status"] == "PASS_IN_SCOPE"
-    assert "no timestamp validation" in " ".join(outcomes["scientific_limitations"]).lower()
+    assert "no chronology validation exists" in " ".join(outcomes["scientific_limitations"]).lower()
 
 
 def test_nonfinite_exceptions_are_tagged_without_leaking_nonstandard_json(outcomes):

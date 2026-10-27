@@ -139,7 +139,7 @@ def test_sdist_with_credential_like_value_is_rejected(tmp_path):
 def test_dependency_metadata_requires_no_runtime_dependencies(tmp_path):
     wheel = make_wheel(tmp_path, {
         "enerlint-0.1.0a0.dist-info/METADATA":
-            METADATA + b"Requires-Dist: unsafe-package>=1\n",
+            METADATA.replace(b"\n\n", b"\nRequires-Dist: unsafe-package>=1\n\n"),
     })
     with pytest.raises(AuditError, match="Unexpected runtime dependencies"):
         audit_package(wheel)
@@ -148,7 +148,7 @@ def test_dependency_metadata_requires_no_runtime_dependencies(tmp_path):
 def test_dev_only_optional_dependency_remains_allowed(tmp_path):
     wheel = make_wheel(tmp_path, {
         "enerlint-0.1.0a0.dist-info/METADATA":
-            METADATA + b"Requires-Dist: pytest>=8; extra == 'dev'\n",
+            METADATA.replace(b"\n\n", b"\nRequires-Dist: pytest>=8; extra == 'dev'\n\n"),
     })
     assert audit_package(wheel)["runtime_dependencies"] == []
 

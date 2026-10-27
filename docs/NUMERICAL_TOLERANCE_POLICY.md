@@ -95,7 +95,11 @@ can reject mismatched **author declarations**; it cannot verify actual fluid
 composition, backend calculations or calibration. Do not interpret a passing
 metadata review as property-data validation.
 
-## 7. External critique request — still open
+## 7. Manufactured tolerance-edge and cancellation references
+
+See [manufactured/limiting numerical cases](MANUFACTURED_LIMITS.md) for explicit 1 W and 1e−9 kg/s inclusive thresholds, zero flow, extreme property reference values, and charge/discharge cancellation. In particular, a passing result can contain a real nonzero residual **inside** tolerance; an absent reference or strict-invalid numeric operation must not be converted into PASS. The two deliberately tolerated discrepancies and their independent reference equations are preserved in the [frozen catalogue](manufactured_limits_v0.1.json) and CI ledger. These are developer-authored software tests; their existence is **not** validation of the numeric tolerance policy for instruments or real models.
+
+## 8. External critique request — still open
 
 A reviewer should independently assess:
 

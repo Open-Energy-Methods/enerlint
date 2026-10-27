@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "steady_control_volume",
+  "case_id": "synthetic_nonadiabatic_compressor",
+  "provenance": {
+    "evidence_class": "hand_constructed",
+    "declared_source": "Author-derived synthetic steady first-law example with nonzero heat and shaft-work crossings; no measurements"
+  },
+  "assumptions": {
+    "steady_state": true,
+    "neglect_kinetic_potential": true
+  },
+  "inlets": [
+    {
+      "name": "working_fluid_in",
+      "mass_flow_kg_s": 1,
+      "specific_enthalpy_j_kg": 200000
+    }
+  ],
+  "outlets": [
+    {
+      "name": "working_fluid_out",
+      "mass_flow_kg_s": 1,
+      "specific_enthalpy_j_kg": 260000
+    }
+  ],
+  "heat_into_volume_w": 10000,
+  "shaft_work_out_w": -50000
+}

@@ -21,6 +21,7 @@ import tarfile
 import zipfile
 from datetime import datetime, timezone
 from email.parser import Parser
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -188,6 +189,18 @@ def audit_package(path: Path) -> dict:
     }
 
 
+def build_tool_versions() -> dict[str, str | None]:
+    """Record installed build/test package versions without assuming they are pinned."""
+    packages = ("build", "setuptools", "wheel", "pytest", "jsonschema", "ruff")
+    result: dict[str, str | None] = {}
+    for package in packages:
+        try:
+            result[package] = version(package)
+        except PackageNotFoundError:
+            result[package] = None
+    return result
+
+
 def main() -> int:
     try:
         wheels = sorted(DIST.glob("enerlint-*.whl"))
@@ -206,6 +219,7 @@ def main() -> int:
             "github_run_id": os.environ.get("GITHUB_RUN_ID") or None,
             "runner_os": os.environ.get("RUNNER_OS") or sys.platform,
             "python_version": sys.version.split()[0],
+            "build_tool_versions": build_tool_versions(),
             "source_tracked_file_count": tracked_count,
             "security_checks": [
                 "git tracked files: bounded token/private-key pattern and prohibited names",

@@ -48,6 +48,27 @@ selected in advance by the software developer, do not constitute a held-out
 independent fault distribution, and do not quantify false positives on real
 engineering data. Strongly correlated or compensated errors can escape.
 
+## Expanded analytical reference catalogue — separate evidence set
+
+A newer [ten-case analytical catalogue](BENCHMARK_CASE_CARDS.md) adds worked
+compressor, turbine, mixer, splitter, exchanger and storage cases, with a
+versioned [manifest of author-derived oracle values](analytical_reference_v0.1.json)
+and a [standalone Decimal reference calculator](../scripts/run_analytical_catalog.py).
+
+```bash
+python scripts/run_analytical_catalog.py
+```
+
+The catalogue has **ten selected positive cases and ten deliberately failing
+mutations**, selected by the same project maintainer. The runner writes a new,
+hashed-input, per-run evidence ledger to
+`artifacts/ci/analytical_catalog_v0.1.json` which is uploaded as a
+GitHub Actions artifact. The foundation's four-baseline/six-mutation ledger
+remains unchanged, and overlapping cases must **not** be counted as
+independent new datasets. The new tests do **not** establish validation,
+blind fault-detection rates, external reproducibility or a peer-reviewed
+benchmark. See [open review issue #25](https://github.com/Open-Energy-Methods/enerlint/issues/25).
+
 ## External review required before a scientific release
 
 Obtain an independent review of boundary equations, unit conventions,

@@ -114,6 +114,8 @@ assesses declared metadata consistency.
 
 The [synthetic negative-control registry](NEGATIVE_CONTROL_STUDY.md) distinguishes physics-balance failures, contract rejections, compensated escapes and clean metamorphic controls. Never treat the developer-chosen cases or `INVALID_INPUT` events as measured real-world fault-detection accuracy.
 
+The [numerical conditioning review](NUMERICAL_CONDITIONING_REVIEW_2026-10-27.md) includes both a source-decimal balance that binary64 falsely flags *relative to that declared arithmetic* and an out-of-tolerance decimal discrepancy that binary64 misses. Do not claim that numerical PASS/FAIL is reliable under arbitrary very large enthalpy reference offsets, or that `math.fsum` restores bits lost during input/product rounding.
+
 The [scientific scope](SCIENTIFIC_SCOPE.md), [report contract](REPORT_SCHEMA.md), [benchmark case cards](BENCHMARK_CASE_CARDS.md), and [native comparison protocol](EXPERIMENT_D1_THERMAL_COMPARISON.md) give specific technical boundaries. Changes to public scientific claims should include a dated example and corresponding evidence. Retain previous assertions in git history. Solicited independent critique remains **open** ([issue #25](https://github.com/Open-Energy-Methods/enerlint/issues/25)).
 
 **Policy owner:** OEM creator/maintainer. **External status:** unreviewed project editorial/scientific rule, not legal or standards advice.

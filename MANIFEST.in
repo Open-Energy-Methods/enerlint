@@ -4,6 +4,9 @@ include LICENSE
 include CITATION.cff
 include README.md
 recursive-include docs *.md *.json
+# Public but unrelated outreach/brand documents do not belong in scientific packages.
+exclude docs/KTH_CONCEPT_NOTE.md
+exclude docs/BRANDING.md
 recursive-include examples *.json
 recursive-include scripts *.py
 recursive-include tests *.py

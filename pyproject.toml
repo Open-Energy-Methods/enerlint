@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77.0.3", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,7 +9,8 @@ description = "Solver-independent conservation and numerical consistency checks 
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Abhijith Sivaprasadan" }]
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 keywords = ["energy", "thermodynamics", "verification", "engineering", "simulation", "conservation"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -23,6 +24,11 @@ classifiers = [
   "Topic :: Scientific/Engineering",
 ]
 dependencies = []
+
+[project.urls]
+Repository = "https://github.com/Open-Energy-Methods/enerlint"
+Issues = "https://github.com/Open-Energy-Methods/enerlint/issues"
+Documentation = "https://github.com/Open-Energy-Methods/enerlint/blob/main/docs/VERIFICATION_CONTRACT.md"
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "jsonschema>=4.18,<5"]

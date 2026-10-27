@@ -43,6 +43,10 @@ interpreted as predictive accuracy on unknown simulator faults.
 
 See the [39-scenario mutation register](NEGATIVE_CONTROL_STUDY.md) and [data-only replay fixture](negative_controls_v0.1.json): 18 selected physical-balance failures, 11 invalid-input contract probes, six known software-blind-spot passes, one metadata-only timing claim and three clean transformation controls. The expectations were written before CI execution but **not** externally preregistered or independently adjudicated. This satisfies a software-test expansion task, **not** the separate gate of 20 independently reviewed and diverse real-model failures or held-out accuracy measurement.
 
+## Separate tolerance-conditioning audit
+
+The [ten-case Decimal-versus-binary64 comparison](NUMERICAL_CONDITIONING_REVIEW_2026-10-27.md) documents two *source-decimal* versus float PASS/FAIL disagreements and a representability rejection. The [optional preflight](../scripts/audit_numeric_conditioning.py) compares source-text arithmetic, binary64 operand conversion and core arithmetic. These are maintainer-authored counterexamples, not statistical false-positive/negative estimates or independent adjudication. No change to the frozen core decision/report schema is implied.
+
 ## Metamorphic invariances (valid transformations)
 
 - Reordering streams changes neither mass nor energy residual.

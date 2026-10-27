@@ -39,6 +39,10 @@ The current tests implement these but have not been independently peer reviewed.
 The fault injected has an expected outcome by construction; this cannot be
 interpreted as predictive accuracy on unknown simulator faults.
 
+## Expanded negative-control evidence — frozen, not externally preregistered
+
+See the [39-scenario mutation register](NEGATIVE_CONTROL_STUDY.md) and [data-only replay fixture](negative_controls_v0.1.json): 18 selected physical-balance failures, 11 invalid-input contract probes, six known software-blind-spot passes, one metadata-only timing claim and three clean transformation controls. The expectations were written before CI execution but **not** externally preregistered or independently adjudicated. This satisfies a software-test expansion task, **not** the separate gate of 20 independently reviewed and diverse real-model failures or held-out accuracy measurement.
+
 ## Metamorphic invariances (valid transformations)
 
 - Reordering streams changes neither mass nor energy residual.

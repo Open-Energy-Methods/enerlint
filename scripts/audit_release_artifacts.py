@@ -164,7 +164,9 @@ def audit_package(path: Path) -> dict:
         }
         if not required.issubset(members):
             raise AuditError("Sdist lacks expected source/schema/build configuration")
-        metadata_paths = [x for x in filenames if x.endswith("/PKG-INFO")]
+        # Setuptools sdists may contain both top-level PKG-INFO and
+        # src/enerlint.egg-info/PKG-INFO. The top-level file is authoritative.
+        metadata_paths = [f"{root}/PKG-INFO"] if f"{root}/PKG-INFO" in members else []
     if len(metadata_paths) != 1:
         raise AuditError(f"Expected one package metadata file, got {metadata_paths!r}")
     metadata = Parser().parsestr(members[metadata_paths[0]].decode("utf-8"))

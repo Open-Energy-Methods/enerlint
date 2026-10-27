@@ -161,6 +161,12 @@ def audit_package(path: Path) -> dict:
             f"{root}/src/enerlint/verify.py",
             f"{root}/src/enerlint/schemas/report-v0.1.0.schema.json",
             f"{root}/pyproject.toml",
+            f"{root}/CITATION.cff",
+            f"{root}/LICENSE",
+            f"{root}/examples/steady_compressor.json",
+            f"{root}/docs/VERIFICATION_CONTRACT.md",
+            f"{root}/scripts/run_foundation_benchmark.py",
+            f"{root}/tests/test_steady.py",
         }
         if not required.issubset(members):
             raise AuditError("Sdist lacks expected source/schema/build configuration")

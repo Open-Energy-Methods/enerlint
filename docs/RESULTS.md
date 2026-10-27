@@ -69,6 +69,10 @@ independent new datasets. The new tests do **not** establish validation,
 blind fault-detection rates, external reproducibility or a peer-reviewed
 benchmark. See [open review issue #25](https://github.com/Open-Energy-Methods/enerlint/issues/25).
 
+## Manufactured / limiting numerical reference cases — separate evidence set
+
+The [13-case manufactured suite](MANUFACTURED_LIMITS.md) tests near-zero and zero flows, exact absolute-tolerance boundaries, large enthalpy cancellation, power/flow scaling, reversed signed crossings, capacity equality, strongly cancelling storage rates, and two cases that must yield `INVALID_INPUT`. Inputs and predeclared numerical targets are in [the versioned JSON catalogue](manufactured_limits_v0.1.json). `python scripts/run_manufactured_limits.py` writes a per-run CI ledger including **deliberate tolerated discrepancies**, not just failures. These are maintainer-created numeric/software tests, not evidence of measured plant performance or fault-detection accuracy.
+
 ## External review required before a scientific release
 
 Obtain an independent review of boundary equations, unit conventions,

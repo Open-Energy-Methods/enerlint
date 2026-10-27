@@ -54,6 +54,10 @@ keeping enthalpy endpoints fixed: conservation remains satisfied. This is a
 **test that EnerLint must not pretend to detect**. Detection without a
 separate operating-point or equipment map reference would be a false claim.
 
+## Manufactured numerical stress and limits
+
+A separate [13-case manufactured suite](MANUFACTURED_LIMITS.md) adds a flow/power-to-zero sequence, near-zero or perfectly zero transport, exact numerical threshold inclusivity, large-value cancellation, common enthalpy shifts, boundary sign reversal and intentionally invalid arithmetic. It distinguishes **physically unusual yet contract-evaluable** values from inputs the checker must reject as `INVALID_INPUT`, and it deliberately records two perturbations that stay within numeric thresholds. These tests were selected by the maintainer, not sampled from real-world faults. There is no computed convergence order of a physical discretization.
+
 ## Expansion evidence and gates (updated 27 October 2026)
 
 - [x] Minimum 10 **maintainer-derived, independently checkable** analytical reference problems; [worked cases](BENCHMARK_CASE_CARDS.md), [frozen oracles](analytical_reference_v0.1.json), and [Decimal audit runner](../scripts/run_analytical_catalog.py). This does **not** satisfy external independent review.

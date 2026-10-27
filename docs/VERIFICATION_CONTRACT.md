@@ -116,6 +116,15 @@ independently chosen material/species reference states are not addressed.
 Storage scale: |delta E| plus magnitudes of integrated heat flows. Threshold
 and scale are included in report.
 
+Numerical aggregation is performed with `math.fsum` where applicable. A finite
+individual input may still produce an unrepresentable product, aggregate, or
+threshold in binary64; EnerLint raises `ContractError` (CLI exit 2)
+rather than treating such a result as a scientific pass. This does **not**
+eliminate loss of precision in input conversion, multiplication, or severe
+cancellation. See the [numeric tolerance and conditioning review
+note](NUMERICAL_TOLERANCE_POLICY.md), including deliberately valid, invalid,
+undetectable and numerically indeterminate cases.
+
 **These thresholds are software defaults, not accuracy requirements or
 engineering standards.** Domain-specific tolerances must be justified by
 measurement uncertainty, solver precision and research purpose, and supplied

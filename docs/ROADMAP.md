@@ -6,6 +6,9 @@
 - [x] Independent steady mass and energy residuals for non-reactive CVs
 - [x] Energy interval accounting and optional storage capacity
 - [x] Numeric tolerances visible alongside each residual
+- [x] Publish a [strict v0.1.0 JSON report schema](REPORT_SCHEMA.md) with stable check IDs and status constraints
+- [x] Emit deterministic report JSON and optional machine-readable `INVALID_INPUT` artifacts
+- [x] Validate schema invariants and packaged schema resources across supported CI environments
 - [x] CLI, Python API, example cases and machine-readable reports
 - [x] Fault injection and metamorphic invariance tests
 - [x] Synthetic benchmark run with hashed JSON evidence ledger

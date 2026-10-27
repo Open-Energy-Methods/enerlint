@@ -1,0 +1,797 @@
+{
+  "catalog_id": "enerlint-manufactured-limits-v0.1",
+  "version": "0.1.0",
+  "created_utc": "2026-10-27",
+  "independence": "Maintainer-derived analytic fixtures with reference arithmetic separate from EnerLint implementation. No external peer review.",
+  "meaning_of_pass": "PASS_IN_SCOPE means residuals are within chosen numeric thresholds for the provided declared inputs, NOT exact physics or operating-point validity.",
+  "coverage": [
+    "zero flow",
+    "near-zero flow",
+    "ideal zero losses",
+    "identical specific enthalpies",
+    "absolute-threshold inclusivity",
+    "large cancellation",
+    "enthalpy reference shift",
+    "boundary and energy sign reversal",
+    "scaled operating point",
+    "storage capacity equality",
+    "storage cancellation and tolerated missed mismatch",
+    "invalid time interval",
+    "overflow from individually finite numbers"
+  ],
+  "cases": [
+    {
+      "id": "TH-LM-001",
+      "version": "0.1",
+      "title": "Zero-flow no-transfer control volume",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Both nonempty port lists report zero mass; heat and shaft crossing zero; steady no-accumulation assumption explicitly true.",
+      "limitations": "No information on whether a real machine can remain in this idle state.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_zero_flux",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; zero-mass ideal idle volume"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 0,
+            "specific_enthalpy_j_kg": 500000
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 0,
+            "specific_enthalpy_j_kg": 600000
+          }
+        ],
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 0
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "shaft_work_out_w",
+          "replacement": 2,
+          "expected_status": "FAIL",
+          "expected_check": "steady_first_law",
+          "expected_residual": -2,
+          "lesson": "Missing nonzero external work is detectable at 1 W absolute floor"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 0,
+          "threshold": 1e-9,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 0,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-002",
+      "version": "0.1",
+      "title": "Near-zero matched flow and infinitesimal shaft input",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Positive flow 1e-12 kg/s on both sides; inlet 100 kJ/kg, outlet 200 kJ/kg; work into CV 1e-7 W.",
+      "limitations": "Energy absolute floor 1 W dominates trace-scale energy; a significant relative error can pass.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_trace_flow",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; trace flow, absolute tolerance floor"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 1e-12,
+            "specific_enthalpy_j_kg": 100000
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 1e-12,
+            "specific_enthalpy_j_kg": 200000
+          }
+        ],
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": -1e-7
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "shaft_work_out_w",
+          "replacement": 0,
+          "expected_status": "PASS_IN_SCOPE",
+          "expected_check": "steady_first_law",
+          "expected_residual": -1e-7,
+          "lesson": "Deliberate 100% trace-work omission remains below 1 W energy floor"
+        },
+        {
+          "field": "shaft_work_out_w",
+          "replacement": 2,
+          "expected_status": "FAIL",
+          "expected_check": "steady_first_law",
+          "expected_residual": -2.0000001,
+          "lesson": "Macroscopic 2 W perturbation still fails"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 2e-12,
+          "threshold": 1e-9,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 2e-7,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-003",
+      "version": "0.1",
+      "title": "Isenthalpic equal-flow ideal boundary",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "One inlet/outlet 2 kg/s at equal 250 kJ/kg; external heat/work zero.",
+      "limitations": "Real throttling would need other physical constraints; passing balance cannot prove pressure drop.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_identical_enthalpy",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; isenthalpic ideal equal-flow states"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 2,
+            "specific_enthalpy_j_kg": 250000
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 2,
+            "specific_enthalpy_j_kg": 250000
+          }
+        ],
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 0
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "heat_into_volume_w",
+          "replacement": 2,
+          "expected_status": "FAIL",
+          "expected_check": "steady_first_law",
+          "expected_residual": 2,
+          "lesson": "Uncompensated heat crossing is detected"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 4,
+          "threshold": 4e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 0,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-004",
+      "version": "0.1",
+      "title": "Exact inclusive absolute energy threshold",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Steady 1 kg/s equal zero-reference enthalpies, Q_in exactly +1 W, W_out 0; residual +1 W equals the default 1 W floor.",
+      "limitations": "PASS_IN_SCOPE does not mean R_E=0; threshold inclusivity is a numeric policy.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_exact_energy_threshold",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; nonzero exactly-on-threshold residual"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 1,
+            "specific_enthalpy_j_kg": 0
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 1,
+            "specific_enthalpy_j_kg": 0
+          }
+        ],
+        "heat_into_volume_w": 1,
+        "shaft_work_out_w": 0
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "heat_into_volume_w",
+          "replacement": 1.01,
+          "expected_status": "FAIL",
+          "expected_check": "steady_first_law",
+          "expected_residual": 1.01,
+          "lesson": "Slightly above exact inclusive 1 W floor fails"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 2,
+          "threshold": 2e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 1,
+          "scale": 1,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-005",
+      "version": "0.1",
+      "title": "Exact inclusive absolute mass threshold",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Zero inlet flow and a 1e-9 kg/s outlet crossing; zero enthalpy, Q/W; residual is -1e-9 kg/s.",
+      "limitations": "Physically exact steady mass conservation is not satisfied; only configured software tolerance permits PASS.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_exact_mass_threshold",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; near-zero mass discrepancy equal to absolute tolerance"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 0,
+            "specific_enthalpy_j_kg": 0
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 1e-9,
+            "specific_enthalpy_j_kg": 0
+          }
+        ],
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 0
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "outlets.0.mass_flow_kg_s",
+          "replacement": 1.01e-9,
+          "expected_status": "FAIL",
+          "expected_check": "steady_mass_closure",
+          "expected_residual": -1.01e-9,
+          "lesson": "Residual just outside absolute mass threshold fails"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": -1e-9,
+          "scale": 1e-9,
+          "threshold": 1e-9,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 0,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-006",
+      "version": "0.1",
+      "title": "Large common property zero with exact cancellation",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Two 1 kg/s inlets at 1e15 ± 1000 J/kg, 2 kg/s outlet at 1e15 J/kg; adiabatic and no work.",
+      "limitations": "Large absolute values are representable but smaller-than-ULP changes may disappear; not a property-data validity test.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_large_cancellation",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; large cancelling enthalpy transport"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "a",
+            "mass_flow_kg_s": 1,
+            "specific_enthalpy_j_kg": 1000000000001000
+          },
+          {
+            "name": "b",
+            "mass_flow_kg_s": 1,
+            "specific_enthalpy_j_kg": 999999999999000
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 2,
+            "specific_enthalpy_j_kg": 1000000000000000
+          }
+        ],
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 0
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "inlets.0.specific_enthalpy_j_kg",
+          "replacement": 1000000000001004,
+          "expected_status": "FAIL",
+          "expected_check": "steady_first_law",
+          "expected_residual": 4,
+          "lesson": "Four J/kg noncompensating change is represented and detected"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 4,
+          "threshold": 4e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 2000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-007",
+      "version": "0.1",
+      "title": "Common +1e12 J/kg enthalpy datum shift",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "2 kg/s compressor input 1e12+300k and output 1e12+420k; W_out=-240k W; common offset cancels under exact mass closure.",
+      "limitations": "A common shift is mathematically harmless only with mass closure and a compatible fluid basis; individual port offsets are unsafe.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_common_datum_shift",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; invariant common property reference shift"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 2,
+            "specific_enthalpy_j_kg": 1000000300000
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 2,
+            "specific_enthalpy_j_kg": 1000000420000
+          }
+        ],
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": -240000
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "outlets.0.specific_enthalpy_j_kg",
+          "replacement": 1000000420002,
+          "expected_status": "FAIL",
+          "expected_check": "steady_first_law",
+          "expected_residual": -4,
+          "lesson": "Changing only one reference endpoint is rejected by first-law accounting"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 4,
+          "threshold": 4e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 480000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-008",
+      "version": "0.1",
+      "title": "Reversed port and signed energy crossing",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Algebraic reversal of a nonadiabatic compressor case: inlet h260k, outlet h200k, Q_in=-10k, W_out=+50k for 1 kg/s.",
+      "limitations": "Algebraic reversal of a steady equation is not proof of a physically reversible process.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_boundary_reversal",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; reversed ports, heat and shaft crossing signs"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 1,
+            "specific_enthalpy_j_kg": 260000
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 1,
+            "specific_enthalpy_j_kg": 200000
+          }
+        ],
+        "heat_into_volume_w": -10000,
+        "shaft_work_out_w": 50000
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "heat_into_volume_w",
+          "replacement": 10000,
+          "expected_status": "FAIL",
+          "expected_check": "steady_first_law",
+          "expected_residual": 20000,
+          "lesson": "Reversing ports without preserving the corresponding heat sign breaks balance"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 2,
+          "threshold": 2e-8,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 120000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-009",
+      "version": "0.1",
+      "title": "Power/flow scaling under unchanged enthalpy states",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Scale baseline compressor inlet/outlet flows from 2 to 20 kg/s and shaft input from 240 to 2400 kW; no heat crossing.",
+      "limitations": "All balances close at an entirely different operating point, exposing the known conservation-only escape.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_flow_power_scaled",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; flow and shaft power scaled together"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 20,
+            "specific_enthalpy_j_kg": 300000
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 20,
+            "specific_enthalpy_j_kg": 420000
+          }
+        ],
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": -2400000
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "shaft_work_out_w",
+          "replacement": -2399990,
+          "expected_status": "FAIL",
+          "expected_check": "steady_first_law",
+          "expected_residual": -10,
+          "lesson": "Uncompensated ten-watt change still fails despite scaled flow"
+        }
+      ],
+      "expected_checks": {
+        "steady_mass_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 40,
+          "threshold": 4e-7,
+          "unit": "kg/s"
+        },
+        "steady_first_law": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 4800000,
+          "threshold": 1,
+          "unit": "W"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-010",
+      "version": "0.1",
+      "title": "Ideal lossless storage with exactly filled capacity",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Single interval duration 600 s; E rises 500k to 800k J by 500 W charging; zero loss/discharge; capacity exactly 800k J.",
+      "limitations": "An energy capacity check at equality does not test power or usable outlet temperature.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "storage_interval",
+        "case_id": "lm_ideal_storage_capacity",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; lossless capacity equality"
+        },
+        "assumptions": {
+          "constant_interval_rates": true
+        },
+        "duration_s": 600,
+        "energy_initial_j": 500000,
+        "energy_final_j": 800000,
+        "heat_charge_into_storage_w": 500,
+        "heat_discharge_out_storage_w": 0,
+        "heat_loss_out_storage_w": 0,
+        "capacity_j": 800000
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "capacity_j",
+          "replacement": 799999,
+          "expected_status": "FAIL",
+          "expected_check": "storage_capacity",
+          "expected_residual": 1,
+          "lesson": "Any positive capacity excursion fails the zero-tolerance capacity constraint"
+        }
+      ],
+      "expected_checks": {
+        "storage_energy_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 600000,
+          "threshold": 1,
+          "unit": "J"
+        },
+        "storage_capacity": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 0,
+          "threshold": 0,
+          "unit": "J"
+        }
+      }
+    },
+    {
+      "id": "TH-LM-011",
+      "version": "0.1",
+      "title": "Large cancelling charge/discharge masks a small stored-energy discrepancy",
+      "classification": "EVALUATED_LIMIT",
+      "physical_conditions": "Ten seconds, initial inventory 1e9 J, charge 100000001 W, discharge 100000000 W, loss zero; final inventory initial+10 J.",
+      "limitations": "Relative energy threshold of 20.0000002 J permits a 10 J inventory mistake; not a fault sensitivity claim.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "storage_interval",
+        "case_id": "lm_storage_near_cancellation",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; opposing large interval rates, near-zero net change"
+        },
+        "assumptions": {
+          "constant_interval_rates": true
+        },
+        "duration_s": 10,
+        "energy_initial_j": 1000000000,
+        "energy_final_j": 1000000010,
+        "heat_charge_into_storage_w": 100000001,
+        "heat_discharge_out_storage_w": 100000000,
+        "heat_loss_out_storage_w": 0
+      },
+      "expected_status": "PASS_IN_SCOPE",
+      "perturbations": [
+        {
+          "field": "energy_final_j",
+          "replacement": 1000000020,
+          "expected_status": "PASS_IN_SCOPE",
+          "expected_check": "storage_energy_closure",
+          "expected_residual": 10,
+          "lesson": "Ten-joule inventory error is below relative threshold and remains a scoped pass"
+        },
+        {
+          "field": "energy_final_j",
+          "replacement": 1000000110,
+          "expected_status": "FAIL",
+          "expected_check": "storage_energy_closure",
+          "expected_residual": 100,
+          "lesson": "Hundred-joule inventory error exceeds the threshold and is flagged"
+        }
+      ],
+      "expected_checks": {
+        "storage_energy_closure": {
+          "status": "PASS",
+          "residual": 0,
+          "scale": 2000000020,
+          "threshold": 20.0000002,
+          "unit": "J"
+        },
+        "storage_capacity": {
+          "status": "NOT_CHECKED",
+          "residual": null,
+          "scale": null,
+          "threshold": null,
+          "unit": null
+        }
+      }
+    },
+    {
+      "id": "TH-LM-012",
+      "version": "0.1",
+      "title": "Zero-duration storage interval is invalid",
+      "classification": "REJECTED_CONTRACT",
+      "physical_conditions": "Rate and state values are finite but dt=0; contract requires a strictly positive interval.",
+      "limitations": "Do not conflate an invalid mathematical interval with an evaluated conservation failure.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "storage_interval",
+        "case_id": "lm_invalid_zero_duration",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; zero seconds: unsupported storage interval"
+        },
+        "assumptions": {
+          "constant_interval_rates": true
+        },
+        "duration_s": 0,
+        "energy_initial_j": 100,
+        "energy_final_j": 100,
+        "heat_charge_into_storage_w": 0,
+        "heat_discharge_out_storage_w": 0,
+        "heat_loss_out_storage_w": 0
+      },
+      "expected_status": "INVALID_INPUT",
+      "perturbations": [],
+      "expected_contract_error": "must be > 0"
+    },
+    {
+      "id": "TH-LM-013",
+      "version": "0.1",
+      "title": "Finite input values with overflowing m-times-h are invalid",
+      "classification": "REJECTED_CONTRACT",
+      "physical_conditions": "One inlet and outlet, each 1e308 kg/s with h=1e308 J/kg. Inputs individually parse as finite binary64 but products overflow.",
+      "limitations": "No numerical closure result is meaningful. This is not a physically plausible flow and must be rejected rather than passed.",
+      "case": {
+        "schema_version": "0.1.0",
+        "kind": "steady_control_volume",
+        "case_id": "lm_invalid_transport_overflow",
+        "provenance": {
+          "evidence_class": "hand_constructed",
+          "declared_source": "TH-LM v0.1 manufactured/limiting case; synthetic, maintainer-derived; finite fields, unrepresentable transport product"
+        },
+        "assumptions": {
+          "steady_state": true,
+          "neglect_kinetic_potential": true
+        },
+        "inlets": [
+          {
+            "name": "in",
+            "mass_flow_kg_s": 1e+308,
+            "specific_enthalpy_j_kg": 1e+308
+          }
+        ],
+        "outlets": [
+          {
+            "name": "out",
+            "mass_flow_kg_s": 1e+308,
+            "specific_enthalpy_j_kg": 1e+308
+          }
+        ],
+        "heat_into_volume_w": 0,
+        "shaft_work_out_w": 0
+      },
+      "expected_status": "INVALID_INPUT",
+      "perturbations": [],
+      "expected_contract_error": "Transport energy overflow"
+    }
+  ]
+}

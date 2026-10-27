@@ -24,6 +24,12 @@ Independent physical validation requires independent evidence beyond this tool.
 | A deliberate mutation trips a named residual | Sensitivity to all real-world engineering mistakes |
 | Report corresponds to a SHA-256-bound JSON object | Source provenance authenticity or independent study replication |
 
+For publication wording, the [scientific evidence and claim policy](SCIENTIFIC_CLAIM_POLICY.md)
+is authoritative: its proposed **V0–V5 are OEM-internal evidence descriptors**, not
+ASME classifications, a maturity score or a claim of external accreditation.
+The current alpha has bounded V0/V1 evidence and maintainer-derived analytic
+case cards; its native-tool comparison and independent validation are pending.
+
 ## Independence hierarchy (suggested for future research)
 
 0. **Internal solver success**: solver completed/converged; no independent test.
@@ -37,6 +43,9 @@ Independent physical validation requires independent evidence beyond this tool.
    uncertainties and a documented validation protocol (not yet done).
 
 These are descriptive evidence categories, not externally certified levels.
+They are not identical to, or superseded by, the proposed V0–V5 evidence
+descriptors in the [claims policy](SCIENTIFIC_CLAIM_POLICY.md): this list
+illustrates **kinds of independent reference**, not awarded grades.
 
 ## Explicit exclusions
 

@@ -104,6 +104,8 @@ Storage energies use a zero-based nonnegative energy convention.
 - `NOT_CHECKED` (per-check only): optional calculation lacked required input,
   such as storage capacity; **never** reinterpreted as a successful check.
 - Input errors raise `ContractError`; CLI exits with status **2**, not "PASS".
+  When `--output` is supplied, rejected inputs also produce a structured
+  `INVALID_INPUT` JSON report; the CLI still prints the diagnostic to stderr.
 - Failed conservation checks exit with status **1**; scoped passes exit **0**.
 
 This package does not inspect the physical solver, prove its governing equations
@@ -115,6 +117,7 @@ with wrong inputs may still satisfy conservation.
 
 - [Numeric tolerance, cancellation and representability policy](docs/NUMERICAL_TOLERANCE_POLICY.md)
 - [Verification contract, equations, tolerances](docs/VERIFICATION_CONTRACT.md)
+- [Versioned report schema, stable check IDs and rejected-input JSON](docs/REPORT_SCHEMA.md)
 - [Scientific limits and independence](docs/SCIENTIFIC_SCOPE.md)
 - [Predeclared benchmark and fault-injection protocol](docs/BENCHMARK_PROTOCOL.md)
 - [Worked analytical benchmark case cards (compressor and thermal store)](docs/BENCHMARK_CASE_CARDS.md)

@@ -140,6 +140,8 @@ with wrong inputs may still satisfy conservation.
 - [Ten worked analytical benchmark case cards (all synthetic, external review pending)](docs/BENCHMARK_CASE_CARDS.md)
 - [Thirteen manufactured/limiting numerical case cards, including tolerated errors](docs/MANUFACTURED_LIMITS.md)
 - [Frozen manufactured reference inputs and expected statuses](docs/manufactured_limits_v0.1.json)
+- [39 registered synthetic negative controls, known escapes and replay instructions](docs/NEGATIVE_CONTROL_STUDY.md)
+- [Frozen fault directives and prespecified outcomes](docs/negative_controls_v0.1.json)
 - [Frozen ten-case expected results and deliberate failing mutations](docs/analytical_reference_v0.1.json)
 - [Initial synthetic benchmark results](docs/RESULTS.md)
 - [Prespecified native thermal diagnostic comparison (D1; not yet run)](docs/EXPERIMENT_D1_THERMAL_COMPARISON.md)

@@ -6,7 +6,7 @@ on:
     paths:
       - .github/workflows/sync-native-issue-types.yml
   issues:
-    types: [opened, labeled, edited]
+    types: [opened, labeled]
 permissions:
   contents: read
   issues: write
@@ -75,9 +75,9 @@ jobs:
                   return "Feature"
               return "Task"
           
-          fallback = {"Story": "Feature", "Research": "Task", "Experiment": "Task", "Spike": "Task"}
           updated = 0
           unchanged = 0
+          cleared = 0
           deferred = {}
           for page in range(1, 10):
               issues = api("GET", f"issues?state=all&per_page=100&page={page}")
@@ -88,16 +88,13 @@ jobs:
                       continue
                   want = desired(issue.get("labels", []), issue.get("title",""))
                   native = available.get(want.casefold())
-                  if native is None:
-                      if want in ("Epic", "Initiative"):
-                          deferred.setdefault(want, []).append(issue["number"])
-                          continue  # Don't disguise Epics as Tasks.
-                      substitute = fallback.get(want, "Task")
-                      native = available.get(substitute.casefold())
-                      if native is None:
-                          deferred.setdefault(want, []).append(issue["number"])
-                          continue
                   current = issue.get("type")
+                  if native is None:
+                      deferred.setdefault(want, []).append(issue["number"])
+                      if current is not None:
+                          api("PATCH", f"issues/{issue['number']}", {"type": None})
+                          cleared += 1
+                      continue
                   if current and current.get("name", "").casefold() == native.casefold():
                       unchanged += 1
                       continue
@@ -105,8 +102,8 @@ jobs:
                   updated += 1
               if len(issues) < 100:
                   break
-          print(f"Native issue type assignments: {updated} changed; {unchanged} already correct.")
+          print(f"Native type assignments: {updated} updated; {unchanged} unchanged; {cleared} incorrect stale types cleared.")
           for missing, numbers in deferred.items():
-              print(f"Create native organization type '{missing}' to classify issue numbers: {numbers}")
+              print(f"Org type '{missing}' is unavailable; safely untyped pending owner enablement: {numbers}")
           
           PY

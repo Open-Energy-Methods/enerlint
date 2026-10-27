@@ -40,6 +40,7 @@ jobs:
               if len(page_labels)<100: break
           added=updated=unchanged=0
           for name,color,description in labels:
+              description=description[:100]
               if name not in existing:
                   api("POST","labels",{"name":name,"color":color,"description":description})
                   added+=1

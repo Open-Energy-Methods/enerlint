@@ -1,0 +1,110 @@
+name: Synchronize native GitHub issue types
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/sync-native-issue-types.yml
+  issues:
+    types: [opened, labeled]
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: native-type-sync-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Backfill native issue types from existing labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+          
+          repo = os.environ["GITHUB_REPOSITORY"]
+          token = os.environ["GH_TOKEN"]
+          headers = {
+              "Authorization": f"Bearer {token}",
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2026-03-10",
+              "User-Agent": "OEM-native-issue-types",
+          }
+          
+          def api(method, path, data=None):
+              url = "https://api.github.com/repos/" + repo + "/" + path
+              body = json.dumps(data).encode() if data is not None else None
+              req = urllib.request.Request(url, data=body, method=method, headers=headers)
+              if body is not None:
+                  req.add_header("Content-Type", "application/json")
+              try:
+                  with urllib.request.urlopen(req, timeout=45) as response:
+                      raw = response.read()
+                  return json.loads(raw) if raw else None
+              except urllib.error.HTTPError as exc:
+                  print(f"GitHub API {exc.code} {method} {path}: {exc.read().decode(errors='replace')[:500]}")
+                  raise
+          
+          available = {t["name"].casefold(): t["name"] for t in api("GET", "issue-types") if t.get("is_enabled", True)}
+          print("Available native types:", ", ".join(sorted(available.values())))
+          
+          def desired(labels, title):
+              labels = {x["name"] for x in labels}
+              if "agile:epic" in labels or title.startswith(("EPIC ", "ROADMAP ")):
+                  return "Epic"
+              if "agile:spike" in labels:
+                  return "Spike"
+              if "agile:story" in labels or title.startswith("STORY "):
+                  return "Story"
+              if "type:bug" in labels or title.startswith("BUG "):
+                  return "Bug"
+              if "type:experiment" in labels:
+                  return "Experiment"
+              if "type:research" in labels:
+                  return "Research"
+              if "type:feature" in labels:
+                  return "Feature"
+              return "Task"
+          
+          fallback = {"Story": "Feature", "Research": "Task", "Experiment": "Task", "Spike": "Task"}
+          updated = 0
+          unchanged = 0
+          deferred = {}
+          for page in range(1, 10):
+              issues = api("GET", f"issues?state=all&per_page=100&page={page}")
+              if not issues:
+                  break
+              for issue in issues:
+                  if "pull_request" in issue:
+                      continue
+                  want = desired(issue.get("labels", []), issue.get("title",""))
+                  native = available.get(want.casefold())
+                  if native is None:
+                      if want == "Epic":
+                          deferred.setdefault(want, []).append(issue["number"])
+                          continue  # Don't disguise Epics as Tasks.
+                      substitute = fallback.get(want, "Task")
+                      native = available.get(substitute.casefold())
+                      if native is None:
+                          deferred.setdefault(want, []).append(issue["number"])
+                          continue
+                  current = issue.get("type")
+                  if current and current.get("name", "").casefold() == native.casefold():
+                      unchanged += 1
+                      continue
+                  api("PATCH", f"issues/{issue['number']}", {"type": native})
+                  updated += 1
+              if len(issues) < 100:
+                  break
+          print(f"Native issue type assignments: {updated} changed; {unchanged} already correct.")
+          for missing, numbers in deferred.items():
+              print(f"Create native organization type '{missing}' to classify issue numbers: {numbers}")
+          
+          PY

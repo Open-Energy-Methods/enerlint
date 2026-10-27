@@ -1,0 +1,154 @@
+{
+  "policy_id": "oem-enerlint-scientific-claims-v0.1",
+  "schema_version": "0.1.0",
+  "project": "EnerLint",
+  "date": "2026-10-27",
+  "purpose": "Hand-curated positive and negative phrasing examples for human/editorial checks; not a universal natural-language classifier.",
+  "independence": "All examples are author-crafted. They are not externally adjudicated.",
+  "examples": [
+    {
+      "id": "CV_BOUND_PASS",
+      "decision": "ALLOWED",
+      "claim": "The declared synthetic compressor mass and first-law residuals are within their thresholds.",
+      "available_evidence": "The two specified residuals on the supplied synthetic input.",
+      "limitation": "Not a verified operating point or experimentally validated compressor.",
+      "scenario": "steady_cv_pass"
+    },
+    {
+      "id": "CV_OVERCLAIM",
+      "decision": "REJECT",
+      "claim": "EnerLint validates any compressor model.",
+      "available_evidence": "No empirical benchmark or general model validation has been performed.",
+      "limitation": "Conservation residuals alone are insufficient for real-world validation.",
+      "scenario": "steady_cv_pass"
+    },
+    {
+      "id": "CV_MISSED_COMPENSATED_ERROR",
+      "decision": "ALLOWED",
+      "claim": "A wrong target operating point may still pass when mass flows and shaft work change together.",
+      "available_evidence": "A documented synthetic compensated perturbation passes both declared checks.",
+      "limitation": "The target operating point is not inferred from conservation.",
+      "scenario": "compensating_pass"
+    },
+    {
+      "id": "CV_CORRECT_OPERATING_POINT",
+      "decision": "REJECT",
+      "claim": "PASS_IN_SCOPE proves this compressor is operating at the correct point.",
+      "available_evidence": "No independently specified operating-point reference is evaluated.",
+      "limitation": "The documented compensated perturbation also passes.",
+      "scenario": "compensating_pass"
+    },
+    {
+      "id": "STORAGE_INTERVAL_PASS",
+      "decision": "ALLOWED",
+      "claim": "The single interval energy-accounting residual is within the stated threshold.",
+      "available_evidence": "The declared storage interval energy balance was evaluated.",
+      "limitation": "This does not test deliverable temperature or time-series chronology.",
+      "scenario": "storage_missing_capacity"
+    },
+    {
+      "id": "STORAGE_CAPACITY_OVERCLAIM",
+      "decision": "REJECT",
+      "claim": "The storage capacity has been verified.",
+      "available_evidence": "Capacity_j was omitted; storage_capacity is NOT_CHECKED.",
+      "limitation": "No capacity constraint was evaluated.",
+      "scenario": "storage_missing_capacity"
+    },
+    {
+      "id": "STORAGE_NOT_CHECKED",
+      "decision": "ALLOWED",
+      "claim": "Storage capacity was not checked because capacity_j was absent.",
+      "available_evidence": "The explicit NOT_CHECKED entry has null numeric fields.",
+      "limitation": "This is not an evaluated pass or fail.",
+      "scenario": "storage_missing_capacity"
+    },
+    {
+      "id": "DECLARED_PROVENANCE",
+      "decision": "ALLOWED",
+      "claim": "The submitted input declares its evidence class as experimental; that declaration was not authenticated.",
+      "available_evidence": "The provenance.evidence_class field is author-supplied.",
+      "limitation": "No independent measurement or provenance verification occurred.",
+      "scenario": "author_claim_experimental"
+    },
+    {
+      "id": "CLAIM_EXTERNAL_VALIDATION",
+      "decision": "REJECT",
+      "claim": "An experimental provenance label establishes independent validation.",
+      "available_evidence": "The label is declared by the data provider and need not be true.",
+      "limitation": "No independent observations, reference quality or UQ were examined.",
+      "scenario": "author_claim_experimental"
+    },
+    {
+      "id": "CI_SCOPE",
+      "decision": "ALLOWED",
+      "claim": "The listed CI run passed the defined software tests on the reported platforms.",
+      "available_evidence": "The GitHub Actions job logs show software checks completed.",
+      "limitation": "CI alone does not establish real-world engineering accuracy.",
+      "scenario": "ci_only"
+    },
+    {
+      "id": "CI_CERTIFICATION",
+      "decision": "REJECT",
+      "claim": "EnerLint is ASME certified and scientifically validated by CI.",
+      "available_evidence": "No qualification/certification process or real-model validation has taken place.",
+      "limitation": "An ASME reference is not institutional approval.",
+      "scenario": "ci_only"
+    },
+    {
+      "id": "HASH_PROVENANCE",
+      "decision": "REJECT",
+      "claim": "A SHA-256 input fingerprint independently authenticates model measurements.",
+      "available_evidence": "Hashing detects changes to the submitted canonical JSON object.",
+      "limitation": "The source and measurements might still be fabricated.",
+      "scenario": "steady_cv_pass"
+    },
+    {
+      "id": "COMPARISON_PLAN",
+      "decision": "ALLOWED",
+      "claim": "A native-versus-EnerLint comparison has been specified but not executed.",
+      "available_evidence": "The D1 protocol defines planned conditions and reporting fields.",
+      "limitation": "No comparative performance can be concluded.",
+      "scenario": "planned_d1"
+    },
+    {
+      "id": "COMPARISON_RESULT",
+      "decision": "REJECT",
+      "claim": "EnerLint detects more errors than native TESPy diagnostics.",
+      "available_evidence": "The comparative experiment has not been conducted.",
+      "limitation": "No fair native-diagnostics outcome ledger exists.",
+      "scenario": "planned_d1"
+    },
+    {
+      "id": "REPORT_INVALID",
+      "decision": "ALLOWED",
+      "claim": "This input was rejected; no physical checks were run.",
+      "available_evidence": "INVALID_INPUT produces no evaluated check entries.",
+      "limitation": "It does not establish a physical fault in the upstream model.",
+      "scenario": "invalid_input"
+    },
+    {
+      "id": "REPORT_INVALID_PHYSICS",
+      "decision": "REJECT",
+      "claim": "The upstream physical model is incorrect because EnerLint rejected its input.",
+      "available_evidence": "A malformed input may be a serialization or contract error.",
+      "limitation": "No physical residual was calculated.",
+      "scenario": "invalid_input"
+    },
+    {
+      "id": "BOUNDARY_REVIEW",
+      "decision": "ALLOWED",
+      "claim": "The author supplied all mandatory boundary-review declarations; their physical truth remains unverified.",
+      "available_evidence": "Optional sidecar fields and input fingerprint were checked.",
+      "limitation": "Real unreported pipes and energy transfers may still exist.",
+      "scenario": "author_boundary_attestation"
+    },
+    {
+      "id": "BOUNDARY_CERTIFIED",
+      "decision": "REJECT",
+      "claim": "The author-attested checklist independently certifies the physical control volume.",
+      "available_evidence": "A maintainer's answers are only an attestation.",
+      "limitation": "No independent physical boundary audit was performed.",
+      "scenario": "author_boundary_attestation"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+name: One-time clean issue titles and bodies
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/normalize_issue_metadata.py
+      - .github/workflows/normalize-issue-metadata.yml
+permissions:
+  contents: read
+  issues: write
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove duplicated issue label metadata from public issue content
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/normalize_issue_metadata.py

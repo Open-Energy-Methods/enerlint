@@ -163,3 +163,14 @@ def test_missing_report_schema_is_rejected(tmp_path):
             archive.writestr(name, value)
     with pytest.raises(AuditError, match="lacks expected module/schema"):
         audit_package(wheel)
+
+
+
+def test_sdist_with_setuptools_egg_info_duplicate_metadata_is_accepted(tmp_path):
+    """Setuptools may ship both root and egg-info PKG-INFO in a source archive."""
+    archive = make_sdist(tmp_path, {
+        "enerlint-0.1.0a0/src/enerlint.egg-info/PKG-INFO": METADATA,
+    })
+    result = audit_package(archive)
+    assert result["contains_report_schema"]
+    assert result["runtime_dependencies"] == []

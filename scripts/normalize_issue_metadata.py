@@ -96,7 +96,7 @@ def normalize_body(issue):
         r"(?m)^## Candidate sprint backlog \([^)]*\)\s*$",
         "## Planned stories", body,
     )
-    body = re.sub(r"(?m)(?<=\])\s+—\s+\*\*\d+\s+points\*\*", "", body)
+    body = re.sub(r"(?m)[ \t]+—[ \t]+\*\*\d+[ \t]+points\*\*(?=[ \t]*$)", "", body)
     body = re.sub(r"(?m)^\*\*Project ownership:\*\*.*$\n?", "", body)
 
     # Rename grouping headings in master trackers without changing links.

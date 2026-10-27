@@ -58,8 +58,8 @@ jobs:
           def desired(labels, title):
               labels = {x["name"] for x in labels}
               if "agile:initiative" in labels:
-        return "Initiative"
-    if "agile:epic" in labels or title.startswith(("EPIC ", "ROADMAP ")):
+                  return "Initiative"
+              if "agile:epic" in labels or title.startswith(("EPIC ", "ROADMAP ")):
                   return "Epic"
               if "agile:spike" in labels:
                   return "Spike"

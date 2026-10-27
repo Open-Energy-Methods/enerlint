@@ -35,6 +35,10 @@ jobs:
           examples/steady_compressor.boundary-review.json
       - name: Check nonadiabatic control-volume example
         run: python -m enerlint check examples/steady_nonadiabatic_compressor.json
+      - name: Review property-reference declarations (author attestation only)
+        run: |
+          python scripts/review_property_references.py examples/steady_compressor.json examples/steady_compressor.property-review.json
+          python scripts/review_property_references.py examples/steady_heat_exchanger.json examples/steady_heat_exchanger.property-review.json
       - name: Check demonstrator cases
         shell: bash
         run: |

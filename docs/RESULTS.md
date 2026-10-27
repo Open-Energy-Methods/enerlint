@@ -73,6 +73,10 @@ benchmark. See [open review issue #25](https://github.com/Open-Energy-Methods/en
 
 The [13-case manufactured suite](MANUFACTURED_LIMITS.md) tests near-zero and zero flows, exact absolute-tolerance boundaries, large enthalpy cancellation, power/flow scaling, reversed signed crossings, capacity equality, strongly cancelling storage rates, and two cases that must yield `INVALID_INPUT`. Inputs and predeclared numerical targets are in [the versioned JSON catalogue](manufactured_limits_v0.1.json). `python scripts/run_manufactured_limits.py` writes a per-run CI ledger including **deliberate tolerated discrepancies**, not just failures. These are maintainer-created numeric/software tests, not evidence of measured plant performance or fault-detection accuracy.
 
+## Registered developer-selected negative controls — separate evidence set
+
+A [39-scenario synthetic study](NEGATIVE_CONTROL_STUDY.md) now distinguishes **18 intentionally balance-breaking mutations**, **11 strict-contract rejections**, **six known escapes**, **one metadata-only chronology probe**, and **three valid metamorphic controls**. Outcomes and source Git blob identifiers were frozen in [the v0.1 manifest](negative_controls_v0.1.json) before executing the new suite in CI. The [replay runner](../scripts/run_negative_controls.py) archives the actual mutated input contents, source hashes and output checks. These scenarios are not independently sampled, blinded or externally reviewed. They cannot establish a population fault-detection rate, real-world false-positive rate or timeline-error coverage.
+
 ## External review required before a scientific release
 
 Obtain an independent review of boundary equations, unit conventions,

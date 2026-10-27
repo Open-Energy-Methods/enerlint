@@ -113,6 +113,7 @@ with wrong inputs may still satisfy conservation.
 
 ## Docs
 
+- [Numeric tolerance, cancellation and representability policy](docs/NUMERICAL_TOLERANCE_POLICY.md)
 - [Verification contract, equations, tolerances](docs/VERIFICATION_CONTRACT.md)
 - [Scientific limits and independence](docs/SCIENTIFIC_SCOPE.md)
 - [Predeclared benchmark and fault-injection protocol](docs/BENCHMARK_PROTOCOL.md)

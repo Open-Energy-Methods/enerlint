@@ -116,11 +116,28 @@ with wrong inputs may still satisfy conservation.
 - [Verification contract, equations, tolerances](docs/VERIFICATION_CONTRACT.md)
 - [Scientific limits and independence](docs/SCIENTIFIC_SCOPE.md)
 - [Predeclared benchmark and fault-injection protocol](docs/BENCHMARK_PROTOCOL.md)
+- [Worked analytical benchmark case cards (compressor and thermal store)](docs/BENCHMARK_CASE_CARDS.md)
 - [Initial synthetic benchmark results](docs/RESULTS.md)
 - [Future adapter contract](docs/ADAPTER_SPEC.md)
 - [Competitive overlap and differentiation](docs/PRIOR_ART.md)
 - [KTH research concept note](docs/KTH_CONCEPT_NOTE.md)
 - [Roadmap](docs/ROADMAP.md)
+
+### Reproduce the package, not just a source checkout
+
+The CI matrix now builds both a wheel and a source distribution and tests each
+through a fresh virtual environment **outside the source checkout**, covering
+the CLI's pass, fail, and invalid-input exit paths. To run that gate locally:
+
+```bash
+python -m pip install build
+python -m build --wheel --sdist
+python scripts/verify_distributions.py
+```
+
+This verifies packaging and declared program behavior. It does **not** supply
+independent scientific review or operational validation. See
+[packaging and reproducibility notes](docs/REPRODUCIBILITY.md).
 
 ## Development and release policy
 

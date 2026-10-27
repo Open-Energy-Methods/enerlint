@@ -10,6 +10,18 @@ CheckStatus = Literal["PASS", "FAIL", "NOT_CHECKED"]
 ReportStatus = Literal["PASS_IN_SCOPE", "FAIL", "INVALID_INPUT"]
 
 
+def _json_ready(data: dict[str, Any]) -> dict[str, Any]:
+    """Convert immutable report tuples into JSON-native arrays.
+
+    dataclasses.asdict preserves tuple containers, but a report returned by
+    the Python API must match the published JSON Schema without serialization.
+    """
+    for name in ("checks", "assumptions", "limitations", "errors"):
+        data[name] = list(data[name])
+    return data
+
+
+
 @dataclass(frozen=True)
 class CheckResult:
     name: str
@@ -40,7 +52,7 @@ class VerificationReport:
 
     def as_dict(self) -> dict[str, Any]:
         """Produce the frozen v0.1.0 field layout; no implicit skipped-check passes."""
-        return asdict(self)
+        return _json_ready(asdict(self))
 
     def assert_passed(self) -> None:
         """Fail a pipeline if any check failed or if no check was evaluated."""
@@ -77,7 +89,7 @@ class InvalidInputReport:
 
     def as_dict(self) -> dict[str, Any]:
         """Avoid fabricating a case ID, provenance or fingerprint for invalid input."""
-        return asdict(self)
+        return _json_ready(asdict(self))
 
 
 def serialize_report(report: VerificationReport | InvalidInputReport) -> str:

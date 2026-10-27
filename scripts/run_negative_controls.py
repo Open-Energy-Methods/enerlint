@@ -40,7 +40,14 @@ def canonical_hash(value: Any) -> str:
 
 
 def git_blob_hash(raw: bytes) -> str:
-    return hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\x00" + raw).hexdigest()
+    # GitHub's blob SHA refers to the LF text stored in the Git index.
+    # A Windows working-tree checkout can transparently convert LF -> CRLF.
+    # Only normalize that newline representation; actual JSON content changes
+    # still alter the pinned blob identifier.
+    canonical = raw.replace(b"\r\n", b"\n")
+    return hashlib.sha1(
+        b"blob " + str(len(canonical)).encode("ascii") + b"\x00" + canonical
+    ).hexdigest()
 
 
 def _get(data: Any, path: str) -> Any:

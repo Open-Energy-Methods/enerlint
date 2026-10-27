@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "storage_interval",
+  "case_id": "synthetic_storage_discharge_capacity_unspecified",
+  "provenance": {
+    "evidence_class": "hand_constructed",
+    "declared_source": "TH-ST-002 v0.1 synthetic constant-rate thermal discharge without provided storage capacity; capacity is intentionally NOT_CHECKED"
+  },
+  "assumptions": {
+    "constant_interval_rates": true
+  },
+  "duration_s": 2400,
+  "energy_initial_j": 700000000,
+  "energy_final_j": 364000000,
+  "heat_charge_into_storage_w": 0,
+  "heat_discharge_out_storage_w": 120000,
+  "heat_loss_out_storage_w": 20000
+}

@@ -1,0 +1,26 @@
+{
+  "review_version": "0.1.0",
+  "case_id": "synthetic_adiabatic_compressor",
+  "input_sha256": "5d39da6d196e4b2494a5958af53db32cf7d93bc7d0acfd4e8ac232579e9a7213",
+  "boundary_description": "Synthetic compressor casing, one inlet and one outlet; shaft work enters, heat transfer is assumed zero. Electrical motor and associated losses are outside this chosen boundary.",
+  "declared_inlets": [
+    "inlet"
+  ],
+  "declared_outlets": [
+    "outlet"
+  ],
+  "declarations": {
+    "all_material_crossings_included": true,
+    "material_port_directions_reviewed": true,
+    "all_heat_crossings_included": true,
+    "all_shaft_work_crossings_included": true,
+    "other_energy_crossings_absent_or_accounted": true,
+    "no_mass_or_energy_accumulation": true,
+    "kinetic_potential_omission_justified": true,
+    "no_unmodeled_reactions_or_mass_sources": true,
+    "enthalpy_references_compatible": true
+  },
+  "evidence_note": "Author-defined synthetic reference, not measurements or an externally approved boundary. This attestation cannot identify omitted real-world leakage or motor losses.",
+  "author": "Abhijith Sivaprasadan (maintainer; self-attestation)",
+  "zero_heat_reason": "The synthetic compressor is declared adiabatic; heat crossing is set to zero as an input assumption, not an independently measured result."
+}

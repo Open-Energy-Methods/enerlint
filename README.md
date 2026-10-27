@@ -143,6 +143,8 @@ with wrong inputs may still satisfy conservation.
 - [Frozen manufactured reference inputs and expected statuses](docs/manufactured_limits_v0.1.json)
 - [39 registered synthetic negative controls, known escapes and replay instructions](docs/NEGATIVE_CONTROL_STUDY.md)
 - [Frozen fault directives and prespecified outcomes](docs/negative_controls_v0.1.json)
+- [Numeric conditioning critique and source-Decimal/binary64 disagreement cases](docs/NUMERICAL_CONDITIONING_REVIEW_2026-10-27.md)
+- [Optional precision preflight for exported JSON](scripts/audit_numeric_conditioning.py)
 - [Frozen ten-case expected results and deliberate failing mutations](docs/analytical_reference_v0.1.json)
 - [Initial synthetic benchmark results](docs/RESULTS.md)
 - [Prespecified native thermal diagnostic comparison (D1; not yet run)](docs/EXPERIMENT_D1_THERMAL_COMPARISON.md)

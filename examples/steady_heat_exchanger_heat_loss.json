@@ -1,0 +1,39 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "steady_control_volume",
+  "case_id": "synthetic_heat_exchanger_heat_loss",
+  "provenance": {
+    "evidence_class": "hand_constructed",
+    "declared_source": "TH-CV-008 v0.1 synthetic aggregate two-circuit exchanger with 30 kW external heat loss; separate circuit mass closure assumed"
+  },
+  "assumptions": {
+    "steady_state": true,
+    "neglect_kinetic_potential": true
+  },
+  "inlets": [
+    {
+      "name": "cold_in",
+      "mass_flow_kg_s": 2,
+      "specific_enthalpy_j_kg": 100000
+    },
+    {
+      "name": "hot_in",
+      "mass_flow_kg_s": 1,
+      "specific_enthalpy_j_kg": 500000
+    }
+  ],
+  "outlets": [
+    {
+      "name": "cold_out",
+      "mass_flow_kg_s": 2,
+      "specific_enthalpy_j_kg": 160000
+    },
+    {
+      "name": "hot_out",
+      "mass_flow_kg_s": 1,
+      "specific_enthalpy_j_kg": 350000
+    }
+  ],
+  "heat_into_volume_w": -30000,
+  "shaft_work_out_w": 0
+}

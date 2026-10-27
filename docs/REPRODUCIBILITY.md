@@ -23,6 +23,7 @@ python -m pytest -q
 python scripts/run_foundation_benchmark.py
 python scripts/run_analytical_catalog.py
 python scripts/run_manufactured_limits.py
+python scripts/run_negative_controls.py
 python -m enerlint check examples/steady_compressor.json
 ```
 

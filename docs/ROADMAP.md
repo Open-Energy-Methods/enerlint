@@ -29,7 +29,8 @@
 - [ ] Compare fault detection with incumbent modeling tools
 - [x] Build wheel/sdist on GitHub CI across the supported OS/Python matrix and smoke-test each in a fresh virtual environment ([reproducibility protocol](REPRODUCIBILITY.md))
 - [x] Add bounded [CI artifact hygiene and per-run SHA-256 manifest](CI_SECURITY_AND_REPRODUCIBILITY.md), pinned Actions, least privilege and targeted static lint (internal controls)
-- [ ] Complete release-readiness, licensing, code provenance and independent distribution review (#5; CI manifest alone is insufficient)
+- [x] Record versioned [alpha release-readiness assessment](RELEASE_READINESS_2026-10-27.md), [rights inventory](RELEASE_RIGHTS_REGISTER.md) and [draft release notes](RELEASE_NOTES_CANDIDATE.md); **NO-GO for publication** until open gates close
+- [ ] Complete founder-approved asset/source rights clearance and independent distribution/source review; publication remains blocked
 - [ ] Add contribution, documentation and security procedures
 - [ ] Verify package and project naming/ownership on PyPI and GitHub
 

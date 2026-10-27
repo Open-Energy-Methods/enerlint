@@ -1,0 +1,31 @@
+{
+  "review_version": "0.1.0",
+  "author": "Abhijith Sivaprasadan (maintainer self-attestation)",
+  "basis_note": "Entirely synthetic author declaration of common J/kg enthalpy reference within each independently mass-conserved fluid circuit; NOT a thermophysical property verification.",
+  "case_id": "synthetic_adiabatic_compressor",
+  "input_sha256": "5d39da6d196e4b2494a5958af53db32cf7d93bc7d0acfd4e8ac232579e9a7213",
+  "stream_properties": [
+    {
+      "direction": "inlet",
+      "name": "inlet",
+      "circuit_id": "compressor_working_fluid",
+      "fluid_id": "synthetic_compressor_fluid",
+      "composition_id": "fixed_single_component_synthetic",
+      "backend_id": "manual_synthetic_reference",
+      "backend_version": "case_v0.1",
+      "reference_state_id": "manual_zero_compressor_v1",
+      "source_note": "Maintainer-created constant-offset synthetic values; no property software or instrument used"
+    },
+    {
+      "direction": "outlet",
+      "name": "outlet",
+      "circuit_id": "compressor_working_fluid",
+      "fluid_id": "synthetic_compressor_fluid",
+      "composition_id": "fixed_single_component_synthetic",
+      "backend_id": "manual_synthetic_reference",
+      "backend_version": "case_v0.1",
+      "reference_state_id": "manual_zero_compressor_v1",
+      "source_note": "Maintainer-created constant-offset synthetic values; no property software or instrument used"
+    }
+  ]
+}

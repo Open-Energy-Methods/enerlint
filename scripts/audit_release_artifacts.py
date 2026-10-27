@@ -186,7 +186,7 @@ def audit_package(path: Path) -> dict:
     license_paths = [x for x in filenames if PurePosixPath(x).name == "LICENSE"]
     if len(license_paths) != 1:
         raise AuditError("Expected exactly one distributed LICENSE file")
-    if not members[license_paths[0]].startswith(b"MIT License\\n".replace(b"\\n", b"\n")):
+    if not members[license_paths[0]].startswith(b"MIT License"):
         raise AuditError("Distributed license content does not begin with MIT License")
     return {
         "filename": path.name,

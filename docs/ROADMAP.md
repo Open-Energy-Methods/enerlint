@@ -15,6 +15,8 @@
 
 ## v0.1.0 pre-release gate
 
+- [x] Regression coverage of zero-flow, reference-datum, cancellation, strict-threshold and arithmetic-overflow cases (maintainer-authored tests)
+- [ ] Independent scientific critique of numeric tolerances, conditioning and residual formulation
 - [ ] Source review of analytical cases and tolerance choice
 - [ ] Add documented property-data acceptance protocol
 - [ ] Replace/generalize demonstration fixtures with real exported model

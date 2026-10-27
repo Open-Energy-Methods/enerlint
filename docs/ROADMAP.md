@@ -40,6 +40,8 @@
 - [x] Record separately implemented [Decimal-based reference arithmetic](../scripts/run_analytical_catalog.py) and an automated ten-case/twenty-run self-test ledger; preserve the earlier four-case result.
 - [x] Develop [13 manufactured/limiting test problems](MANUFACTURED_LIMITS.md) (11 evaluated, 2 rejected), record 13 selected perturbations including two known tolerated errors and a flow/power convergence sequence. Developer self-test only, external review still open.
 - [x] Freeze and replay [39 synthetic negative controls](NEGATIVE_CONTROL_STUDY.md): 18 failed balances, 11 invalid-input rejections, six expected blind spots, one metadata-only timing description and three invariant controls. Developer-authored, not an empirical fault-detection study.
+- [x] Produce an [internal first-law numerical conditioning critique](NUMERICAL_CONDITIONING_REVIEW_2026-10-27.md), with source-decimal versus binary64 comparator, 10 pinned stress cases and two known mismatched PASS/FAIL outcomes (software findings, not peer review).
+- [ ] Obtain **qualified independent** critique for numerical tolerance issue #3, and version a reviewed remedy or explicit decision not to alter core v0.1.
 - [x] Draft a prespecified [native thermal-tool comparison](EXPERIMENT_D1_THERMAL_COMPARISON.md) with equal-information controls; **experiment not yet run**.
 - [ ] Obtain independent critique and compare with one real external implementation; retain null/negative findings.
 

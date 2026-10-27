@@ -77,6 +77,10 @@ The [13-case manufactured suite](MANUFACTURED_LIMITS.md) tests near-zero and zer
 
 A [39-scenario synthetic study](NEGATIVE_CONTROL_STUDY.md) now distinguishes **18 intentionally balance-breaking mutations**, **11 strict-contract rejections**, **six known escapes**, **one metadata-only chronology probe**, and **three valid metamorphic controls**. Outcomes and source Git blob identifiers were frozen in [the v0.1 manifest](negative_controls_v0.1.json) before executing the new suite in CI. The [replay runner](../scripts/run_negative_controls.py) archives the actual mutated input contents, source hashes and output checks. These scenarios are not independently sampled, blinded or externally reviewed. They cannot establish a population fault-detection rate, real-world false-positive rate or timeline-error coverage.
 
+## Conditioning risk: core-versus-source-decimal divergence
+
+A [ten-case developer-authored arithmetic stress suite](NUMERICAL_CONDITIONING_REVIEW_2026-10-27.md) identifies **two** examples with different PASS/FAIL decisions when the exact decimal numbers in an exported JSON file are compared with the current binary64 engine, and **one** representability rejection. A common +1e18 J/kg shift can yield +128 W numerically despite exact decimal balance, while a smaller +1e16 J/kg shift can cause a genuine 2 W decimal-source discrepancy to disappear. The [optional standalone preflight](../scripts/audit_numeric_conditioning.py) exposes conversion and arithmetic effects but does not silently change the core report or establish physical source truth. Both scenarios require technical review.
+
 ## External review required before a scientific release
 
 Obtain an independent review of boundary equations, unit conventions,

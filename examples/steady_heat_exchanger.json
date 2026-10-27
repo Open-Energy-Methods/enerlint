@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "steady_control_volume",
+  "case_id": "synthetic_two_stream_heat_exchanger",
+  "provenance": {
+    "evidence_class": "hand_constructed",
+    "declared_source": "Analytical four-port heat-exchanger balance; entirely synthetic"
+  },
+  "assumptions": {"steady_state": true, "neglect_kinetic_potential": true},
+  "inlets": [
+    {"name": "cold_in", "mass_flow_kg_s": 1.0, "specific_enthalpy_j_kg": 100000.0},
+    {"name": "hot_in", "mass_flow_kg_s": 2.0, "specific_enthalpy_j_kg": 500000.0}
+  ],
+  "outlets": [
+    {"name": "cold_out", "mass_flow_kg_s": 1.0, "specific_enthalpy_j_kg": 200000.0},
+    {"name": "hot_out", "mass_flow_kg_s": 2.0, "specific_enthalpy_j_kg": 450000.0}
+  ],
+  "heat_into_volume_w": 0.0,
+  "shaft_work_out_w": 0.0
+}

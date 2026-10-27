@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use EnerLint, please cite the exact tagged software version and its associated release record, once available."
+title: "EnerLint: Solver-independent checks for energy engineering outputs"
+authors:
+  - family-names: "Sivaprasadan"
+    given-names: "Abhijith"
+    orcid: "https://orcid.org/0000-0003-0299-5745"
+license: MIT
+version: 0.1.0a0
+type: software

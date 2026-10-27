@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "storage_interval",
+  "case_id": "synthetic_one_hour_storage",
+  "provenance": {
+    "evidence_class": "hand_constructed",
+    "declared_source": "Analytical constant-power storage interval; entirely synthetic"
+  },
+  "assumptions": {"constant_interval_rates": true},
+  "duration_s": 3600.0,
+  "energy_initial_j": 2000000000.0,
+  "energy_final_j": 2216000000.0,
+  "heat_charge_into_storage_w": 120000.0,
+  "heat_discharge_out_storage_w": 50000.0,
+  "heat_loss_out_storage_w": 10000.0,
+  "capacity_j": 3000000000.0
+}

@@ -1,0 +1,15 @@
+# Published source distribution is intended to be independently runnable.
+# Do not package private planning documents, raw industrial files, or generated CI artifacts.
+include LICENSE
+include CITATION.cff
+include README.md
+recursive-include docs *.md *.json
+recursive-include examples *.json
+recursive-include scripts *.py
+recursive-include tests *.py
+prune artifacts/ci
+prune .github
+prune .venv
+prune build
+prune dist
+global-exclude __pycache__ *.py[cod] .DS_Store

@@ -12,7 +12,7 @@ python scripts/run_foundation_benchmark.py
 ```
 
 At development time, **42 Python tests passed locally on Python 3.13.5**.
-Cross-platform CI is configured but **has not been run on GitHub**.
+GitHub Actions CI has run successfully as of 27 October 2026 ([example successful run](https://github.com/Open-Energy-Methods/enerlint/actions/runs/40452499654)). This establishes that the configured workflow executed, **not** that the benchmarks were independently reviewed or the software externally validated.
 
 | Demonstration | Expected | Observed |
 |---|---|---|

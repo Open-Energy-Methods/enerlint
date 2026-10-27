@@ -1,0 +1,31 @@
+{
+  "review_version": "0.1.0",
+  "author": "Abhijith Sivaprasadan (maintainer self-attestation)",
+  "basis_note": "Intentional incompatibility: the outlet's enthalpy datum is shifted by +100,000 J/kg, while the declared shaft input is also changed. Whole-case mass and energy residuals still close; a reference audit must abstain.",
+  "case_id": "synthetic_mismatched_reference_compensated",
+  "input_sha256": "57b34b93edadcc7052723ca9f61a34f29fc384f804e0a9e7ce24d6a404683508",
+  "stream_properties": [
+    {
+      "direction": "inlet",
+      "name": "inlet",
+      "circuit_id": "compressor_working_fluid",
+      "fluid_id": "synthetic_compressor_fluid",
+      "composition_id": "fixed_single_component_synthetic",
+      "backend_id": "manual_synthetic_reference",
+      "backend_version": "case_v0.1",
+      "reference_state_id": "manual_zero_compressor_v1",
+      "source_note": "Maintainer-created constant-offset synthetic values; no property software or instrument used"
+    },
+    {
+      "direction": "outlet",
+      "name": "outlet",
+      "circuit_id": "compressor_working_fluid",
+      "fluid_id": "synthetic_compressor_fluid",
+      "composition_id": "fixed_single_component_synthetic",
+      "backend_id": "manual_synthetic_reference",
+      "backend_version": "case_v0.1",
+      "reference_state_id": "different_zero_B",
+      "source_note": "Maintainer-created constant-offset synthetic values; no property software or instrument used"
+    }
+  ]
+}

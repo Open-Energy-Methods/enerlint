@@ -34,7 +34,7 @@ def test_correct_author_orcid_never_aliases_another_researcher():
     assert CORRECT_ORCID in citation
     assert OLD_UNRELATED_ORCID not in citation
     assert re.search(r'^    given-names: "Abhijith"$', citation, re.MULTILINE)
-    assert re.search(r'^  - family-names: "Sivaprasadan", citation, re.MULTILINE)
+    assert re.search(r'^  - family-names: "Sivaprasadan"$', citation, re.MULTILINE)
 
 
 def test_no_unassigned_doi_or_misleading_release_date():

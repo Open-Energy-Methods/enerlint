@@ -27,6 +27,9 @@ The goal is to detect numerical and physical *inconsistencies in exported model
 results* without trusting the originating solver's convergence flag or residuals.
 A passing conservation check does **not** prove that the model is realistic, that
 measurements were correct, or that its scientific conclusions are justified.
+The [scientific claims policy](docs/SCIENTIFIC_CLAIM_POLICY.md) distinguishes bounded
+output-consistency evidence from model validation, calibration, UQ and certification.
+Its V0–V5 terms are **OEM-only descriptions**, not ASME ratings or automatic grades.
 
 ## What works now
 
@@ -121,6 +124,7 @@ with wrong inputs may still satisfy conservation.
 - [Verification contract, equations, tolerances](docs/VERIFICATION_CONTRACT.md)
 - [Versioned report schema, stable check IDs and rejected-input JSON](docs/REPORT_SCHEMA.md)
 - [Scientific limits and independence](docs/SCIENTIFIC_SCOPE.md)
+- [Evidence descriptors (V0–V5), scientific claims and prohibited inferences](docs/SCIENTIFIC_CLAIM_POLICY.md)
 - [Predeclared benchmark and fault-injection protocol](docs/BENCHMARK_PROTOCOL.md)
 - [Worked analytical benchmark case cards (compressor and thermal store)](docs/BENCHMARK_CASE_CARDS.md)
 - [Initial synthetic benchmark results](docs/RESULTS.md)

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -44,7 +45,7 @@ def test_datum_shift_causes_false_failure_relative_to_textual_decimal_oracle(evi
     by_name = {row["name"]: row for row in result["checks"]}
     energy = by_name["steady_first_law"]
     assert energy["exact_decimal_status"] == "PASS"
-    assert energy["decimal_json_residual"] == "0"
+    assert Decimal(energy["decimal_json_residual"]) == Decimal(0)
     assert abs(energy["core_binary64_residual"]) == 128.0
     assert energy["decision_disagreement"]
     assert energy["review_threshold_triggered"]
@@ -56,7 +57,7 @@ def test_lost_one_joule_per_kilogram_is_missed_at_large_offset(evidence):
     energy = next(row for row in case["observation"]["checks"]
                   if row["name"] == "steady_first_law")
     assert energy["exact_decimal_status"] == "FAIL"
-    assert energy["decimal_json_residual"] == "-2"
+    assert Decimal(energy["decimal_json_residual"]) == Decimal(-2)
     assert energy["core_status"] == "PASS"
     assert energy["core_binary64_residual"] == 0
     assert case["observation"]["core_status"] == "PASS_IN_SCOPE"
@@ -67,8 +68,8 @@ def test_normal_datum_shift_is_benign_and_balances_agree(evidence):
         x = evidence["cases"][index]["observation"]
         assert x["classification"] == "DECIMAL_BINARY_AGREEMENT"
         assert x["core_status"] == "PASS_IN_SCOPE"
-        assert next(r for r in x["checks"]
-                    if r["name"] == "steady_first_law")["decimal_json_residual"] == "0"
+        assert Decimal(next(r for r in x["checks"]
+                    if r["name"] == "steady_first_law")["decimal_json_residual"]) == 0
 
 
 def test_input_tolerance_floor_is_not_zero_physical_residual(evidence):
@@ -76,9 +77,9 @@ def test_input_tolerance_floor_is_not_zero_physical_residual(evidence):
     past = evidence["cases"][9]["observation"]
     near_check = next(x for x in near["checks"] if x["name"] == "steady_first_law")
     past_check = next(x for x in past["checks"] if x["name"] == "steady_first_law")
-    assert near_check["decimal_json_residual"] == "-0.50"
+    assert Decimal(near_check["decimal_json_residual"]) == Decimal("-0.5")
     assert near_check["exact_decimal_status"] == "PASS"
-    assert past_check["decimal_json_residual"] == "-1.50"
+    assert Decimal(past_check["decimal_json_residual"]) == Decimal("-1.5")
     assert past_check["exact_decimal_status"] == "FAIL"
 
 

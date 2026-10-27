@@ -1,0 +1,839 @@
+{
+  "catalog_id": "enerlint-negative-controls-v0.1",
+  "version": "0.1.0",
+  "created_utc": "2026-10-27",
+  "prespecification_status": "Author-selected and frozen before the CI run of this catalogue; not externally registered, blinded, or independently adjudicated. Later corrections must be documented.",
+  "mutation_seed": "OEM-NC11-DETERMINISTIC-V0.1-NO-RNG",
+  "independence": "Developer-designed software experiments on declared synthetic exports; no real-world fault classification or scientific validation.",
+  "baselines": {
+    "steady_compressor": {
+      "file": "examples/steady_compressor.json",
+      "git_blob_sha1": "697b5b4b6ad92922f365284f61c9cd0acfae1cd0",
+      "expected_status": "PASS_IN_SCOPE"
+    },
+    "steady_turbine": {
+      "file": "examples/steady_turbine.json",
+      "git_blob_sha1": "0e95d8a7b223649f2a4d12dd95e28735d841c88c",
+      "expected_status": "PASS_IN_SCOPE"
+    },
+    "steady_heat_exchanger": {
+      "file": "examples/steady_heat_exchanger.json",
+      "git_blob_sha1": "6eef4ccab845722eb7b6b6545abb21e35bab0dc1",
+      "expected_status": "PASS_IN_SCOPE"
+    },
+    "steady_nonadiabatic_compressor": {
+      "file": "examples/steady_nonadiabatic_compressor.json",
+      "git_blob_sha1": "a61b3d1e29344479cf80cb0a802601e2ce2d465b",
+      "expected_status": "PASS_IN_SCOPE"
+    },
+    "steady_splitter_adiabatic": {
+      "file": "examples/steady_splitter_adiabatic.json",
+      "git_blob_sha1": "0817b3ba4be8053e9dc0c75be9d4bb0f77947423",
+      "expected_status": "PASS_IN_SCOPE"
+    },
+    "storage_interval": {
+      "file": "examples/storage_interval.json",
+      "git_blob_sha1": "22bb35363a7c5e4c74d60bd6c747b4b7c635e752",
+      "expected_status": "PASS_IN_SCOPE"
+    }
+  },
+  "cases": [
+    {
+      "id": "NC-001",
+      "family": "sign",
+      "base": "steady_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "shaft_work_out_w",
+        "value": 240000
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_first_law",
+      "interpretation": "Compressor shaft-work sign inverted",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": -480000,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-002",
+      "family": "sign",
+      "base": "steady_turbine",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "shaft_work_out_w",
+        "value": -400000
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_first_law",
+      "interpretation": "Turbine work sign inverted",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 800000,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-003",
+      "family": "sign",
+      "base": "steady_nonadiabatic_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "heat_into_volume_w",
+        "value": -10000
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_first_law",
+      "interpretation": "Heat flow sign inverted",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": -20000,
+        "mass_threshold_kg_s": 2e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-004",
+      "family": "mass",
+      "base": "steady_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "outlets.0.mass_flow_kg_s",
+        "value": 2.4
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_mass_closure",
+      "interpretation": "Outlet flow overstated",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": -0.3999999999999999,
+        "energy_residual_w": -168000,
+        "mass_threshold_kg_s": 4.4000000000000004e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-005",
+      "family": "mass",
+      "base": "steady_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "inlets.0.mass_flow_kg_s",
+        "value": 1.5
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_mass_closure",
+      "interpretation": "Inlet flow understated",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": -0.5,
+        "energy_residual_w": -150000,
+        "mass_threshold_kg_s": 3.5e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-006",
+      "family": "unit_scale",
+      "base": "steady_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "outlets.0.specific_enthalpy_j_kg",
+        "value": 420
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_first_law",
+      "interpretation": "kJ/kg quantity assigned into J/kg field",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 839160,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-007",
+      "family": "unit_scale",
+      "base": "steady_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "shaft_work_out_w",
+        "value": -240000000
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_first_law",
+      "interpretation": "Work magnitude multiplied by 1000",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 239760000,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 2.4024,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-008",
+      "family": "swap",
+      "base": "steady_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "swap",
+        "path_a": "inlets.0.specific_enthalpy_j_kg",
+        "path_b": "outlets.0.specific_enthalpy_j_kg"
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_first_law",
+      "interpretation": "Compressor inlet/outlet enthalpies swapped",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 480000,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-009",
+      "family": "swap",
+      "base": "steady_heat_exchanger",
+      "kind": "fault",
+      "change": {
+        "op": "swap",
+        "path_a": "outlets.0.specific_enthalpy_j_kg",
+        "path_b": "outlets.1.specific_enthalpy_j_kg"
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_first_law",
+      "interpretation": "Heat exchanger hot/cold outlet enthalpies swapped",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 250000,
+        "mass_threshold_kg_s": 6.000000000000001e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-010",
+      "family": "dropped_stream",
+      "base": "steady_heat_exchanger",
+      "kind": "fault",
+      "change": {
+        "op": "remove",
+        "path": "outlets.1"
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_mass_closure",
+      "interpretation": "Declared hot outlet dropped",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 2,
+        "energy_residual_w": 900000,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-011",
+      "family": "double_count",
+      "base": "steady_heat_exchanger",
+      "kind": "fault",
+      "change": {
+        "op": "append_clone",
+        "path": "outlets",
+        "index": 1,
+        "patch": {
+          "name": "hot_out_duplicate"
+        }
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_mass_closure",
+      "interpretation": "Hot outlet counted twice with unique name",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": -2,
+        "energy_residual_w": -900000,
+        "mass_threshold_kg_s": 8e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-012",
+      "family": "leak",
+      "base": "steady_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "append",
+        "path": "outlets",
+        "value": {
+          "name": "leak",
+          "mass_flow_kg_s": 0.2,
+          "specific_enthalpy_j_kg": 300000
+        }
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_mass_closure",
+      "interpretation": "Explicit leak revealed by mass and energy discrepancy",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": -0.20000000000000018,
+        "energy_residual_w": -60000,
+        "mass_threshold_kg_s": 4.2000000000000006e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-013",
+      "family": "storage_duration",
+      "base": "storage_interval",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "duration_s",
+        "value": 4320
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "storage_energy_closure",
+      "interpretation": "Time interval stretched without integrated energy update",
+      "expected_arithmetic": {
+        "storage_residual_j": -43200000,
+        "storage_threshold_j": 9.936,
+        "capacity_excursion_j": 0,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-014",
+      "family": "storage_inventory",
+      "base": "storage_interval",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "energy_final_j",
+        "value": 2226000000
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "storage_energy_closure",
+      "interpretation": "Final thermal inventory wrong by 10 MJ",
+      "expected_arithmetic": {
+        "storage_residual_j": 10000000,
+        "storage_threshold_j": 8.74,
+        "capacity_excursion_j": 0,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-015",
+      "family": "storage_swap",
+      "base": "storage_interval",
+      "kind": "fault",
+      "change": {
+        "op": "swap",
+        "path_a": "energy_initial_j",
+        "path_b": "energy_final_j"
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "storage_energy_closure",
+      "interpretation": "Start/end thermal inventory swapped",
+      "expected_arithmetic": {
+        "storage_residual_j": -432000000,
+        "storage_threshold_j": 8.64,
+        "capacity_excursion_j": 0,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-016",
+      "family": "storage_swap",
+      "base": "storage_interval",
+      "kind": "fault",
+      "change": {
+        "op": "swap",
+        "path_a": "heat_charge_into_storage_w",
+        "path_b": "heat_discharge_out_storage_w"
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "storage_energy_closure",
+      "interpretation": "Charge and discharge rates interchanged",
+      "expected_arithmetic": {
+        "storage_residual_j": 504000000,
+        "storage_threshold_j": 8.64,
+        "capacity_excursion_j": 0,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-017",
+      "family": "capacity",
+      "base": "storage_interval",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "capacity_j",
+        "value": 2100000000
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "storage_capacity",
+      "interpretation": "End-of-interval energy exceeds capacity",
+      "expected_arithmetic": {
+        "storage_residual_j": 0,
+        "storage_threshold_j": 8.64,
+        "capacity_excursion_j": 116000000,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-018",
+      "family": "boundary",
+      "base": "steady_nonadiabatic_compressor",
+      "kind": "fault",
+      "change": {
+        "op": "set",
+        "path": "shaft_work_out_w",
+        "value": 50000
+      },
+      "expected_outcome": "FAIL",
+      "focus_check": "steady_first_law",
+      "interpretation": "Shaft-work crossing interpreted on wrong side",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": -100000,
+        "mass_threshold_kg_s": 2e-8,
+        "energy_threshold_w": 1,
+        "status": "FAIL"
+      }
+    },
+    {
+      "id": "NC-019",
+      "family": "missing_required",
+      "base": "steady_compressor",
+      "kind": "schema_probe",
+      "change": {
+        "op": "remove",
+        "path": "shaft_work_out_w"
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Missing required work is contract rejection, not physics diagnosis"
+    },
+    {
+      "id": "NC-020",
+      "family": "missing_required",
+      "base": "steady_compressor",
+      "kind": "schema_probe",
+      "change": {
+        "op": "remove",
+        "path": "heat_into_volume_w"
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Missing required heat is contract rejection"
+    },
+    {
+      "id": "NC-021",
+      "family": "duplicate_name",
+      "base": "steady_heat_exchanger",
+      "kind": "schema_probe",
+      "change": {
+        "op": "append_clone",
+        "path": "outlets",
+        "index": 1,
+        "patch": {}
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Duplicate named port forbidden"
+    },
+    {
+      "id": "NC-022",
+      "family": "unknown_units",
+      "base": "steady_compressor",
+      "kind": "schema_probe",
+      "change": {
+        "op": "batch",
+        "items": [
+          {
+            "op": "remove",
+            "path": "outlets.0.specific_enthalpy_j_kg"
+          },
+          {
+            "op": "set",
+            "path": "outlets.0.specific_enthalpy_kj_kg",
+            "value": 420
+          }
+        ]
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Unexpected kJ/kg key cannot replace mandatory SI field"
+    },
+    {
+      "id": "NC-023",
+      "family": "time_schema",
+      "base": "steady_compressor",
+      "kind": "schema_probe",
+      "change": {
+        "op": "set",
+        "path": "timestamp_utc",
+        "value": "2026-10-27T12:00:00Z"
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Timestamp key unsupported in v0.1 steady input"
+    },
+    {
+      "id": "NC-024",
+      "family": "time_schema",
+      "base": "storage_interval",
+      "kind": "schema_probe",
+      "change": {
+        "op": "set",
+        "path": "time_step_s",
+        "value": 1800
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Discrete time-step key unsupported in single-interval input"
+    },
+    {
+      "id": "NC-025",
+      "family": "storage_duration",
+      "base": "storage_interval",
+      "kind": "schema_probe",
+      "change": {
+        "op": "set",
+        "path": "duration_s",
+        "value": 0
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Zero time interval invalid"
+    },
+    {
+      "id": "NC-026",
+      "family": "storage_sign",
+      "base": "storage_interval",
+      "kind": "schema_probe",
+      "change": {
+        "op": "set",
+        "path": "heat_loss_out_storage_w",
+        "value": -10000
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Negative loss violates nonnegative-outflow contract"
+    },
+    {
+      "id": "NC-027",
+      "family": "nonfinite",
+      "base": "steady_compressor",
+      "kind": "schema_probe",
+      "change": {
+        "op": "nonfinite",
+        "path": "shaft_work_out_w",
+        "special": "NaN"
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Nonfinite shaft-work number invalid"
+    },
+    {
+      "id": "NC-028",
+      "family": "nonfinite",
+      "base": "steady_compressor",
+      "kind": "schema_probe",
+      "change": {
+        "op": "nonfinite",
+        "path": "outlets.0.specific_enthalpy_j_kg",
+        "special": "Infinity"
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Nonfinite enthalpy invalid"
+    },
+    {
+      "id": "NC-029",
+      "family": "assumption",
+      "base": "steady_compressor",
+      "kind": "schema_probe",
+      "change": {
+        "op": "set",
+        "path": "assumptions.steady_state",
+        "value": false
+      },
+      "expected_outcome": "INVALID_INPUT",
+      "focus_check": null,
+      "interpretation": "Steady-state assumption false is out of scope"
+    },
+    {
+      "id": "NC-030",
+      "family": "compensated",
+      "base": "steady_compressor",
+      "kind": "blind_spot",
+      "change": {
+        "op": "scale_all_flows_and_work",
+        "factor": 1.1
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": "steady_first_law",
+      "interpretation": "Mass-flow and shaft-work scaling changes operating point undetected",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": -1.1641532182693481e-10,
+        "mass_threshold_kg_s": 4.4000000000000004e-8,
+        "energy_threshold_w": 1,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-031",
+      "family": "compensated",
+      "base": "steady_compressor",
+      "kind": "blind_spot",
+      "change": {
+        "op": "batch",
+        "items": [
+          {
+            "op": "set",
+            "path": "outlets.0.specific_enthalpy_j_kg",
+            "value": 520000
+          },
+          {
+            "op": "set",
+            "path": "shaft_work_out_w",
+            "value": -440000
+          }
+        ]
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": "steady_first_law",
+      "interpretation": "Wrong enthalpy datum offset offset by work, closure alone misses",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 0,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-032",
+      "family": "compensated",
+      "base": "steady_nonadiabatic_compressor",
+      "kind": "blind_spot",
+      "change": {
+        "op": "batch",
+        "items": [
+          {
+            "op": "set",
+            "path": "heat_into_volume_w",
+            "value": 15000
+          },
+          {
+            "op": "set",
+            "path": "shaft_work_out_w",
+            "value": -45000
+          }
+        ]
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": "steady_first_law",
+      "interpretation": "Correlated heat/work offset preserves first law",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 0,
+        "mass_threshold_kg_s": 2e-8,
+        "energy_threshold_w": 1,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-033",
+      "family": "split_fraction",
+      "base": "steady_splitter_adiabatic",
+      "kind": "blind_spot",
+      "change": {
+        "op": "batch",
+        "items": [
+          {
+            "op": "set",
+            "path": "outlets.0.mass_flow_kg_s",
+            "value": 1
+          },
+          {
+            "op": "set",
+            "path": "outlets.1.mass_flow_kg_s",
+            "value": 4
+          }
+        ]
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": "steady_mass_closure",
+      "interpretation": "Wrong split ratio conserves aggregate mass and energy",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 0,
+        "mass_threshold_kg_s": 1e-7,
+        "energy_threshold_w": 1,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-034",
+      "family": "missing_optional",
+      "base": "storage_interval",
+      "kind": "blind_spot",
+      "change": {
+        "op": "remove",
+        "path": "capacity_j"
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": "storage_capacity",
+      "interpretation": "Capacity not provided remains NOT_CHECKED, not a validated capacity",
+      "expected_arithmetic": {
+        "storage_residual_j": 0,
+        "storage_threshold_j": 8.64,
+        "capacity_excursion_j": null,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-035",
+      "family": "tolerance",
+      "base": "steady_compressor",
+      "kind": "blind_spot",
+      "change": {
+        "op": "set",
+        "path": "outlets.0.specific_enthalpy_j_kg",
+        "value": 420000.1
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": "steady_first_law",
+      "interpretation": "Small nonzero 0.2 W residual tolerated by 1 W absolute floor",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": -0.19999999995343387,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-036",
+      "family": "chronology",
+      "base": "storage_interval",
+      "kind": "metadata_only",
+      "change": {
+        "op": "set",
+        "path": "provenance.declared_source",
+        "value": "Author claims upstream clock shifted by one hour; no structured timestamp field in v0.1"
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": null,
+      "interpretation": "Prose mutation does not prove clock offset, illustrates no timestamp validation",
+      "expected_arithmetic": {
+        "storage_residual_j": 0,
+        "storage_threshold_j": 8.64,
+        "capacity_excursion_j": 0,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-037",
+      "family": "invariance",
+      "base": "steady_heat_exchanger",
+      "kind": "clean_control",
+      "change": {
+        "op": "swap",
+        "path_a": "inlets.0",
+        "path_b": "inlets.1"
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": null,
+      "interpretation": "Permuting inlet order leaves conservation invariant",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 0,
+        "mass_threshold_kg_s": 6.000000000000001e-8,
+        "energy_threshold_w": 1,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-038",
+      "family": "invariance",
+      "base": "steady_compressor",
+      "kind": "clean_control",
+      "change": {
+        "op": "batch",
+        "items": [
+          {
+            "op": "set",
+            "path": "inlets.0.specific_enthalpy_j_kg",
+            "value": 1300000
+          },
+          {
+            "op": "set",
+            "path": "outlets.0.specific_enthalpy_j_kg",
+            "value": 1420000
+          }
+        ]
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": null,
+      "interpretation": "Common enthalpy zero shift leaves mass-balanced residual invariant",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 0,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "PASS_IN_SCOPE"
+      }
+    },
+    {
+      "id": "NC-039",
+      "family": "invariance",
+      "base": "steady_turbine",
+      "kind": "clean_control",
+      "change": {
+        "op": "batch",
+        "items": [
+          {
+            "op": "set",
+            "path": "heat_into_volume_w",
+            "value": 10000
+          },
+          {
+            "op": "set",
+            "path": "shaft_work_out_w",
+            "value": 410000
+          }
+        ]
+      },
+      "expected_outcome": "PASS_IN_SCOPE",
+      "focus_check": null,
+      "interpretation": "Matched heat/work changes algebraically conserve energy; only a control",
+      "expected_arithmetic": {
+        "mass_residual_kg_s": 0,
+        "energy_residual_w": 0,
+        "mass_threshold_kg_s": 4e-8,
+        "energy_threshold_w": 1,
+        "status": "PASS_IN_SCOPE"
+      }
+    }
+  ]
+}

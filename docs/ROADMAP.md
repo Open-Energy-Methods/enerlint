@@ -9,9 +9,9 @@
 - [x] CLI, Python API, example cases and machine-readable reports
 - [x] Fault injection and metamorphic invariance tests
 - [x] Synthetic benchmark run with hashed JSON evidence ledger
-- [x] Cross-platform CI configuration (not remotely run yet)
+- [x] CI configuration and successful GitHub Actions execution (27 Oct 2026; not independent scientific validation)
 - [ ] Fresh independent technical review
-- [ ] Publish a GitHub repository and verify CI results there
+- [x] Publish GitHub repository and verify that configured CI runs successfully
 
 ## v0.1.0 pre-release gate
 

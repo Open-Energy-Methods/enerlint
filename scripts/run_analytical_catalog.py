@@ -29,7 +29,9 @@ from enerlint import check_case  # noqa: E402
 getcontext().prec = 40
 CATALOG = ROOT / "docs" / "analytical_reference_v0.1.json"
 OUTPUT = ROOT / "artifacts" / "ci" / "analytical_catalog_v0.1.json"
-D = lambda value: Decimal(str(value))
+def D(value: Any) -> Decimal:
+    """Convert an exported JSON scalar into exact decimal for reference arithmetic."""
+    return Decimal(str(value))
 
 
 def assert_numeric(actual: float | Decimal, expected: float | Decimal, label: str) -> None:

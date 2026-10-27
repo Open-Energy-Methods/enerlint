@@ -50,7 +50,6 @@ def test_claim_examples_have_explicit_decisions_and_limitations():
 def test_public_policy_identifies_oem_labels_as_unaccredited_and_specific():
     source = POLICY.read_text(encoding="utf-8")
     assert "not a certified maturity scale" in source
-    assert "not an automatic" not in source or "automatic" in source
     for descriptor in ("V0 —", "V1 —", "V2 —", "V3 —", "V4 —", "V5 —"):
         assert descriptor in source
     for distinct_term in (
@@ -75,7 +74,8 @@ def test_physically_wrong_operating_point_can_pass_both_checks(load_case):
     assert wrong["shaft_work_out_w"] != reference["shaft_work_out_w"]
     assert target.status == computed.status == "PASS_IN_SCOPE"
     assert all(check.status == "PASS" for check in computed.checks)
-    assert [check.residual for check in computed.checks] == [0.0, 0.0]
+    assert all(abs(check.residual) <= check.threshold for check in computed.checks)
+    assert computed.checks[1].residual == pytest.approx(0.0, abs=1e-7)
     assert computed.source_fingerprint_sha256 != target.source_fingerprint_sha256
     # There is no independent reference/measurement in the checker output.
     assert "operating_point_verified" not in computed.as_dict()

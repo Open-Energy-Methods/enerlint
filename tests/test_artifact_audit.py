@@ -186,7 +186,7 @@ def test_non_spdx_license_metadata_rejected(tmp_path):
 
 
 def test_missing_license_file_metadata_rejected(tmp_path):
-    metadata = METADATA.replace(b"License-File: LICENSE\\n", b"")
+    metadata = METADATA.replace(b"License-File: LICENSE\n", b"")
     archive = make_sdist(tmp_path, {
         "enerlint-0.1.0a0/PKG-INFO": metadata,
     })

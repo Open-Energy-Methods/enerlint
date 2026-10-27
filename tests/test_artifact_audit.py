@@ -21,7 +21,7 @@ from scripts.audit_release_artifacts import (
     audit_package,
 )
 
-METADATA = b"Name: enerlint\nVersion: 0.1.0a0\n\n"
+METADATA = b"Name: enerlint\nVersion: 0.1.0a0\nLicense-Expression: MIT\nLicense-File: LICENSE\n\n"
 
 
 def make_wheel(tmp_path: Path, extra: dict[str, bytes] | None = None) -> Path:
@@ -174,3 +174,21 @@ def test_sdist_with_setuptools_egg_info_duplicate_metadata_is_accepted(tmp_path)
     result = audit_package(archive)
     assert result["contains_report_schema"]
     assert result["runtime_dependencies"] == []
+
+
+def test_non_spdx_license_metadata_rejected(tmp_path):
+    metadata = METADATA.replace(b"License-Expression: MIT", b"License: MIT")
+    archive = make_wheel(tmp_path, {
+        "enerlint-0.1.0a0.dist-info/METADATA": metadata,
+    })
+    with pytest.raises(AuditError, match="SPDX License-Expression"):
+        audit_package(archive)
+
+
+def test_missing_license_file_metadata_rejected(tmp_path):
+    metadata = METADATA.replace(b"License-File: LICENSE\\n", b"")
+    archive = make_sdist(tmp_path, {
+        "enerlint-0.1.0a0/PKG-INFO": metadata,
+    })
+    with pytest.raises(AuditError, match="License-File"):
+        audit_package(archive)

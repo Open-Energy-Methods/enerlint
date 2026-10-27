@@ -118,6 +118,7 @@ with wrong inputs may still satisfy conservation.
 - [Predeclared benchmark and fault-injection protocol](docs/BENCHMARK_PROTOCOL.md)
 - [Worked analytical benchmark case cards (compressor and thermal store)](docs/BENCHMARK_CASE_CARDS.md)
 - [Initial synthetic benchmark results](docs/RESULTS.md)
+- [Prespecified native thermal diagnostic comparison (D1; not yet run)](docs/EXPERIMENT_D1_THERMAL_COMPARISON.md)
 - [Future adapter contract](docs/ADAPTER_SPEC.md)
 - [Competitive overlap and differentiation](docs/PRIOR_ART.md)
 - [KTH research concept note](docs/KTH_CONCEPT_NOTE.md)

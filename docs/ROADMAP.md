@@ -28,7 +28,8 @@
       results from at least one consented publicly shareable source
 - [ ] Compare fault detection with incumbent modeling tools
 - [x] Build wheel/sdist on GitHub CI across the supported OS/Python matrix and smoke-test each in a fresh virtual environment ([reproducibility protocol](REPRODUCIBILITY.md))
-- [ ] Complete release-manifest/license/provenance audit of built distributions
+- [x] Add bounded [CI artifact hygiene and per-run SHA-256 manifest](CI_SECURITY_AND_REPRODUCIBILITY.md), pinned Actions, least privilege and targeted static lint (internal controls)
+- [ ] Complete release-readiness, licensing, code provenance and independent distribution review (#5; CI manifest alone is insufficient)
 - [ ] Add contribution, documentation and security procedures
 - [ ] Verify package and project naming/ownership on PyPI and GitHub
 

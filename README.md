@@ -194,3 +194,13 @@ The [OEM website](https://open-energy-methods.github.io/) has the longer story a
 If you find an error in the derivations, a false alarm, a case that slips through, or a native tool that already does the job better, please [open an issue](https://github.com/Open-Energy-Methods/enerlint/issues). The work is organized through the [scientific roadmap](https://github.com/Open-Energy-Methods/enerlint/issues/36) and [OEM Agile playbook](https://github.com/Open-Energy-Methods/.github/blob/main/docs/AGILE_PLAYBOOK.md). These are planning aids, not measures of scientific maturity.
 
 [OEM on LinkedIn](https://www.linkedin.com/company/open-energy-methods)
+
+<!-- portfolio-reader-guide-2026:start -->
+## Engineering portfolio reader's guide (November 2026)
+
+**What to inspect:** Alpha-stage independent physical consistency checks for exported energy-model results, including synthetic negative controls that reveal what simple balance checks can miss.
+
+**Portfolio context:** [Selected work for engineering recruiters](https://abhijith-sivaprasadan.github.io/projects/enerlint.html) · [Armada 2026 employer-facing selection](https://abhijith-sivaprasadan.github.io/for/armada-2026.html).
+
+These navigation links do not supersede the research status, assumptions, provenance, licences or validation limits documented above. This independent research project is not an employer-commissioned deliverable or externally qualified engineering product.
+<!-- portfolio-reader-guide-2026:end -->
